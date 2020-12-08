@@ -1,23 +1,24 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
-
-let socket;
+// import socketIOClient from "socket.io-client";
+const ws = new WebSocket("ws://localhost:4000");
 
 export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      endpoint: "http://localhost:4000/",
+      endpoint: "http://localhost:4000",
     };
-    socket = socketIOClient(this.state.endpoint);
   }
 
   componentDidMount() {
-    socket.on("connect", function () {
-      console.log("Connected");
-    });
-
-    socket.emit("data", "hello");
+    // const socket = socketIOClient(this.state.endpoint);
+    // // console.log(socket);
+    // socket.on("connect", function () {
+    //   console.log("Connected");
+    // });
+    ws.onopen = function (e) {
+      console.log("WebSocket Client Connected", e);
+    };
   }
 
   render() {
