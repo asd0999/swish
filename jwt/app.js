@@ -1,11 +1,29 @@
 // dependencies
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const https = require("https");
+const http = require("http");
+const fs = require("fs");
+const morgan = require("morgan");
 
-// port
+// env variables
 const PORT = 4000;
 
+// initialize instance of express
 const app = express();
+
+// middleware
+app.use(express.json());
+app.use(morgan(":method :url :status"));
+
+const corsOptions = {
+    origin: ["*", "http://localhost:3000"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
 // routes
 //unprotected get route
@@ -38,10 +56,10 @@ app.post("/api/login", (req, res) => {
     };
 
     // generate token asynchronously, using a callback
-    jwt.sign({ user: user },
+    jwt.sign({ user: user }, // data for creating the token
         "some_secret_key", { expiresIn: "30s" },
         (err, token) => {
-            console.log(user, token);
+            // console.log(user, token);
             res.json({
                 token: token,
             });
@@ -56,7 +74,7 @@ app.post("/api/login", (req, res) => {
 function verifyToken(req, res, next) {
     // get the auth header value
     const bearerHeader = req.headers["authorization"];
-    console.log(bearerHeader);
+    // console.log(bearerHeader);
     // check if bearer is undefine
     if (typeof bearerHeader !== "undefined") {
         // extract token from bearer
@@ -69,7 +87,25 @@ function verifyToken(req, res, next) {
     }
 }
 
-// listener
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+// listener express - not used
+// app.listen(PORT, () => {
+//     console.log(`Express server listening on port ${PORT}`);
+// });
+
+// listener http
+const httpServer = http.createServer(app);
+httpServer.listen(PORT, () => {
+    console.log(`HTTP server listening on port ${PORT}`);
+    // console.log("HTTP Server running on port 80");
 });
+
+// listener https
+// const httpsServer = https.createServer({
+//         key: fs.readFileSync("/etc/letsencrypt/live/my_api_url/privkey.pem"),
+//         cert: fs.readFileSync("/etc/letsencrypt/live/my_api_url/fullchain.pem"),
+//     },
+//     app
+// );
+// httpsServer.listen(443, () => {
+//     console.log("HTTPS Server running on port 443");
+// });
