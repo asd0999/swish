@@ -6,6 +6,7 @@ const https = require("https");
 const http = require("http");
 const fs = require("fs");
 const morgan = require("morgan");
+const socketIo = require("socket.io");
 
 // env variables
 const PORT = 4000;
@@ -95,8 +96,9 @@ function verifyToken(req, res, next) {
 // listener http
 const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => {
-    console.log(`HTTP server listening on port ${PORT}`);
     // console.log("HTTP Server running on port 80");
+    //for testing locally
+    console.log(`HTTP server listening on port ${PORT}`);
 });
 
 // listener https
@@ -109,3 +111,21 @@ httpServer.listen(PORT, () => {
 // httpsServer.listen(443, () => {
 //     console.log("HTTPS Server running on port 443");
 // });
+
+// SOCKET CONNECTION
+// const io = socketIo(httpServer);
+//change to httpsServer after getting SSL certs
+
+// Register a callback function to run when we have an individual connection
+// This is run for each individual user that connects
+const io = socketIo(httpServer);
+
+io.on("connection", function(socket) {
+    console.log("We have a new client: " + socket.id);
+
+    socket.on("data", () => {
+        console.log("got data");
+    });
+
+    socket.on("disconnect", () => console.log("Client disconnected"));
+});
