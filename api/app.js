@@ -1,21 +1,20 @@
-// dependencies
+// // dependencies
 const express = require("express");
+const http = require("http");
+const WebSocket = require("ws");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const http = require("http");
 const morgan = require("morgan");
-const socketIo = require("socket.io");
 // const https = require("https");
 // const fs = require("fs");
-var fs = require("fs"),
-    // NEVER use a Sync function except at start-up!
-    index = fs.readFileSync(__dirname + "/index.html");
 
 // env variables
 const PORT = 4000;
 
-// initialize instance of express
+// initialize instance of express, http, ws
 const app = express();
+const httpServer = http.createServer(app);
+const wsServer = new WebSocket.Server({ port: 8080 });
 
 // middleware
 app.use(express.json());
@@ -76,89 +75,27 @@ app.post("/api/login", (req, res) => {
 
 // verify token before giving access to the protected route
 function verifyToken(req, res, next) {
-    // get the auth header value
     const bearerHeader = req.headers["authorization"];
     // console.log(bearerHeader);
-    // check if bearer is undefine
     if (typeof bearerHeader !== "undefined") {
         // extract token from bearer
         const bearerToken = bearerHeader.split(" ")[1];
         req.token = bearerToken;
         next();
     } else {
-        //forbidden
-        res.sendStatus(403);
+        res.sendStatus(403); //forbidden
     }
 }
 
-// listener express - not used
-// app.listen(PORT, () => {
-//     console.log(`Express server listening on port ${PORT}`);
-// });
-
-// listener http
-const httpServer = http.createServer(function(req, res) {
-    res.end(index);
-}, app);
-
-// listener https
-// const httpsServer = https.createServer({
-//         key: fs.readFileSync("privkey.pem"),
-//         cert: fs.readFileSync("fullchain.pem"),
-//     },
-//     app
-// );
-// httpsServer.listen(443, () => {
-//     console.log("HTTPS Server running on port 443");
-// });
-
 // SOCKET CONNECTION
-const io = socketIo(httpServer);
-io.on("connection", function(socket) {
-    console.log("We have a new client: " + socket.id);
-    socket.on("disconnect", () => console.log("Client disconnected"));
+wsServer.on("connection", function(client) {
+    console.log("connected");
+
+    client.on("close", () => {
+        console.log("close");
+    });
 });
 
 httpServer.listen(PORT, () => {
-    // console.log("HTTP Server running on port 80");
-    //for testing locally
     console.log(`HTTP server listening on port ${PORT}`);
 });
-
-// SUKANYA'S example code
-// const express = require("express");
-// const http = require("http");
-// const WebSocket = require("ws");
-// const router = new express();
-// const server = http.createServer(router);
-// const wsServer = new WebSocket.Server({ server });
-// let STR = [];
-
-// wsServer.on("connection", function(client) {
-//     console.log("connected: ", client.id);
-
-//     client.on("message", (e) => {
-//         const msg = JSON.parse(e);
-//         if (msg.action == "insert") {
-//             STR.push(msg.data);
-//         } else {
-//             STR.pop();
-//         }
-
-//         wsServer.clients.forEach((r) => {
-//             r.send(STR.join(""));
-//         });
-//     });
-
-//     wsServer.clients.forEach((r) => {
-//         r.send(STR.join(""));
-//     });
-
-//     client.on("close", () => {
-//         console.log("close");
-//     });
-// });
-
-// server.listen(4000, () => {
-//     console.log("Server listening on port 4000...");
-// });
