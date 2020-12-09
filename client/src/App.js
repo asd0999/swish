@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Peer from "peerjs";
 import { io } from "socket.io-client";
-// const ws = new WebSocket("ws://localhost:4000");
 
 const peer = new Peer({
   host: "tg1799.itp.io",
@@ -19,7 +18,7 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      my_id: "",
+      my_id: null,
       socketConnection: false,
       peerConnection: false,
     };
@@ -29,21 +28,16 @@ export default class App extends Component {
   componentDidMount() {
     socket.on("connect", () => {
       console.log("connected to server");
-    });
-    // ws.onopen = function () {
-    //   console.log("WebSocket Client Connected");
-    //   // console.log(this);
-    //   ws.send(
-    //     JSON.stringify({
-    //       message: "hey",
-    //     })
-    //   );
-    // };
+      this.setState({
+        socketConnection: true,
+      });
 
-    // ws.onmessage = (e) => {
-    //   const message = JSON.parse(e);
-    //   console.log(message);
-    // };
+      socket.emit("clienthello");
+
+      socket.on("serverack", (data) => {
+        console.log("server ack received", data);
+      });
+    });
 
     this.checkApi();
 

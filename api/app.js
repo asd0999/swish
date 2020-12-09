@@ -16,7 +16,6 @@ const PORT = 4000;
 const app = express();
 const httpServer = http.createServer(app);
 const io = socketIo(httpServer);
-// const wsServer = new WebSocket.Server({ server: httpServer });
 
 // middleware
 app.use(express.json());
@@ -95,43 +94,20 @@ function verifyToken(req, res, next) {
 }
 
 // SOCKET CONNECTION
-
 io.on("connection", function(socket) {
     console.log("Client connected:", socket.id);
+
+    socket.on("clienthello", () => {
+        console.log("clienthello received");
+        socket.emit("serverack", socket.id);
+    });
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
     });
 });
 
-// let clients = [];
-
-// const uuid = () => {
-//     let r = () => Math.floor((1 + Math.random()) * 0x10000).toString(16);
-//     return r() + r() + r();
-// };
-
-// wsServer.on("connection", function(client) {
-//     client.id = uuid();
-//     clients.push(client.id);
-//     console.log("connected:", client.id);
-//     console.log(clients);
-
-//     client.on("message", (e) => {
-//         const message = JSON.parse(e);
-//         console.log(message);
-//         client.send(
-//             JSON.stringify({
-//                 message: "ack",
-//             })
-//         );
-//     });
-
-//     client.on("close", (e) => {
-//         console.log("close", e);
-//     });
-// });
-
+// listener
 httpServer.listen(PORT, () => {
     console.log(`HTTP server listening on port ${PORT}`);
 });
