@@ -5,6 +5,7 @@ const WebSocket = require("ws");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const morgan = require("morgan");
+const socketIo = require("socket.io");
 // const https = require("https");
 // const fs = require("fs");
 
@@ -14,7 +15,8 @@ const PORT = 4000;
 // initialize instance of express, http, ws, peerserver
 const app = express();
 const httpServer = http.createServer(app);
-const wsServer = new WebSocket.Server({ server: httpServer });
+const io = socketIo(httpServer);
+// const wsServer = new WebSocket.Server({ server: httpServer });
 
 // middleware
 app.use(express.json());
@@ -29,11 +31,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // routes
-//unprotected get route
+// unprotected get route
 app.get("/api", (req, res) => {
     res.json({
         message: "API is working",
     });
+});
+
+// index.html file for socket.io checking
+app.get("/api/io", (req, res) => {
+    res.sendFile(__dirname + "/index.html");
 });
 
 // protected post route
@@ -88,13 +95,42 @@ function verifyToken(req, res, next) {
 }
 
 // SOCKET CONNECTION
-wsServer.on("connection", function(client) {
-    console.log("connected");
 
-    client.on("close", () => {
-        console.log("close");
+io.on("connection", function(socket) {
+    console.log("Client connected:", socket.id);
+
+    socket.on("disconnect", () => {
+        console.log("Client disconnected:", socket.id);
     });
 });
+
+// let clients = [];
+
+// const uuid = () => {
+//     let r = () => Math.floor((1 + Math.random()) * 0x10000).toString(16);
+//     return r() + r() + r();
+// };
+
+// wsServer.on("connection", function(client) {
+//     client.id = uuid();
+//     clients.push(client.id);
+//     console.log("connected:", client.id);
+//     console.log(clients);
+
+//     client.on("message", (e) => {
+//         const message = JSON.parse(e);
+//         console.log(message);
+//         client.send(
+//             JSON.stringify({
+//                 message: "ack",
+//             })
+//         );
+//     });
+
+//     client.on("close", (e) => {
+//         console.log("close", e);
+//     });
+// });
 
 httpServer.listen(PORT, () => {
     console.log(`HTTP server listening on port ${PORT}`);

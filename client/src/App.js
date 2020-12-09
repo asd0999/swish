@@ -1,30 +1,57 @@
 import React, { Component } from "react";
 import Peer from "peerjs";
-const ws = new WebSocket("ws://localhost:4000");
+import { io } from "socket.io-client";
+// const ws = new WebSocket("ws://localhost:4000");
 
 const peer = new Peer({
   host: "tg1799.itp.io",
   port: 9000,
   path: "/",
   secure: true,
-  debug: 3,
+  // debug: 3,
+});
+
+const socket = io("http://localhost:4000", {
+  transports: ["websocket"],
 });
 
 export default class App extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      my_id: "",
+      socketConnection: false,
+      peerConnection: false,
+    };
     this.checkApi = this.checkApi.bind(this);
   }
 
   componentDidMount() {
-    ws.onopen = function () {
-      console.log("WebSocket Client Connected");
-    };
+    socket.on("connect", () => {
+      console.log("connected to server");
+    });
+    // ws.onopen = function () {
+    //   console.log("WebSocket Client Connected");
+    //   // console.log(this);
+    //   ws.send(
+    //     JSON.stringify({
+    //       message: "hey",
+    //     })
+    //   );
+    // };
+
+    // ws.onmessage = (e) => {
+    //   const message = JSON.parse(e);
+    //   console.log(message);
+    // };
+
     this.checkApi();
 
     peer.on("open", function (id) {
       console.log("My peer ID is: " + id);
+      // this.setState({
+      //   my_id: id,
+      // });
     });
 
     // peer.on("error", function (err) {
@@ -43,6 +70,7 @@ export default class App extends Component {
   checkApi() {
     fetch("http://localhost:4000/api")
       .then((data) => {
+        // console.log(data);
         return data.json();
       })
       .then((json) => {
@@ -55,6 +83,12 @@ export default class App extends Component {
       <div>
         <h1>Swish</h1>
         <h3>Peer to peer file transfer</h3>
+        {/* <form onSubmit={this.handleSubmit}>
+          <label htmlFor="message">
+            <input type="text" name="message" id="message" />
+          </label>
+          <input type="submit" value="send" />
+        </form> */}
       </div>
     );
   }
