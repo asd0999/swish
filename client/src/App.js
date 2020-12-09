@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import socketIOClient from "socket.io-client";
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://localhost:4000");
 
 export default class App extends Component {
   constructor() {

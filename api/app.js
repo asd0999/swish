@@ -14,7 +14,7 @@ const PORT = 4000;
 // initialize instance of express, http, ws
 const app = express();
 const httpServer = http.createServer(app);
-const wsServer = new WebSocket.Server({ port: 8080 });
+const wsServer = new WebSocket.Server({ server: httpServer });
 
 // middleware
 app.use(express.json());
