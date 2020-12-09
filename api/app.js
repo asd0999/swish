@@ -102,6 +102,10 @@ io.on("connection", function(socket) {
         socket.emit("serverack", socket.id);
     });
 
+    socket.on("peerid", (id) => {
+        console.log("peerid received for socket.id", socket.id, "-->", id);
+    });
+
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
     });

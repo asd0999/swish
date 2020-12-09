@@ -51,6 +51,7 @@ export default class App extends Component {
       console.log("My peer ID is: " + id);
       console.log(this);
       self.peerHandler(id);
+      socket.emit("peerid", id);
     });
   }
 
