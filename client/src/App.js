@@ -18,14 +18,17 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      my_id: null,
+      my_peerid: null,
+      socket_id: null,
       socketConnection: false,
       peerConnection: false,
     };
     this.checkApi = this.checkApi.bind(this);
+    this.peerHandler = this.peerHandler.bind(this);
   }
 
   componentDidMount() {
+    const self = this;
     socket.on("connect", () => {
       console.log("connected to server");
       this.setState({
@@ -36,6 +39,9 @@ export default class App extends Component {
 
       socket.on("serverack", (data) => {
         console.log("server ack received", data);
+        this.setState({
+          socket_id: data,
+        });
       });
     });
 
@@ -43,22 +49,9 @@ export default class App extends Component {
 
     peer.on("open", function (id) {
       console.log("My peer ID is: " + id);
-      // this.setState({
-      //   my_id: id,
-      // });
+      console.log(this);
+      self.peerHandler(id);
     });
-
-    // peer.on("error", function (err) {
-    //   console.log(err);
-    // });
-
-    // peer.on("call", function (incoming_call) {
-    //   incoming_call.answer(peer_stream);
-    // });
-
-    // peer.on("close", function () {
-    //   console.log("close!!!");
-    // });
   }
 
   checkApi() {
@@ -70,6 +63,13 @@ export default class App extends Component {
       .then((json) => {
         console.log(json);
       });
+  }
+
+  peerHandler(id) {
+    this.setState({
+      my_peerid: id,
+      peerConnection: true,
+    });
   }
 
   render() {
