@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const morgan = require("morgan");
 const socketIo = require("socket.io");
+const { createWebSocketStream } = require("ws");
 // const https = require("https");
 // const fs = require("fs");
 
@@ -93,21 +94,72 @@ function verifyToken(req, res, next) {
     }
 }
 
+// OTP
+const generateOTP = () => {
+    const r = () => Math.floor((1 + Math.random()) * 0x100000).toString(16);
+    return r();
+};
+
 // SOCKET CONNECTION
+let clients = {};
+
 io.on("connection", function(socket) {
     console.log("Client connected:", socket.id);
 
     socket.on("clienthello", () => {
         console.log("clienthello received");
         socket.emit("serverack", socket.id);
+        clients[socket.id] = {};
     });
 
     socket.on("peerid", (id) => {
         console.log("peerid received for socket.id", socket.id, "-->", id);
+        if (clients[socket.id]) {
+            clients[socket.id]["peer_id"] = id;
+        }
+        console.log(clients);
+    });
+
+    socket.on("OTPrequest", () => {
+        console.log("otp request recd");
+        const otp = generateOTP();
+        if (clients[socket.id]) {
+            clients[socket.id]["otp"] = otp;
+        }
+        console.log("sending otp:", otp);
+        socket.emit("otp", otp);
+        console.log(clients);
+    });
+
+    socket.on("pairingRequest", (otp) => {
+        console.log("otp received:", otp);
+        console.log("from peer id:", clients[socket.id]["peer_id"]);
+        clients[socket.id]["otp"] = otp;
+        console.log(clients);
+
+        for (const socket_id of Object.keys(clients)) {
+            if (socket_id == socket.id) {
+                continue;
+            }
+            if (clients[socket_id]["otp"] == clients[socket.id]["otp"]) {
+                console.log("Found peer who initiated pairing. Pairing complete");
+                console.log(
+                    "sender:",
+                    clients[socket_id]["peer_id"],
+                    "\nreceiver:",
+                    clients[socket.id]["peer_id"]
+                );
+
+                socket.emit("senderPeerId", clients[socket_id]["peer_id"]);
+                io.to(socket_id).emit("receiverPeerId", clients[socket.id]["peer_id"]);
+            }
+        }
     });
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
+        delete clients[socket.id];
+        console.log(clients);
     });
 });
 
