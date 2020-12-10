@@ -135,25 +135,32 @@ io.on("connection", function(socket) {
         console.log("otp received:", otp);
         console.log("from peer id:", clients[socket.id]["peer_id"]);
         clients[socket.id]["otp"] = otp;
-        console.log(clients);
 
         for (const socket_id of Object.keys(clients)) {
             if (socket_id == socket.id) {
                 continue;
             }
             if (clients[socket_id]["otp"] == clients[socket.id]["otp"]) {
-                console.log("Found peer who initiated pairing. Pairing complete");
+                console.log("Found matching otp. Pairing complete:");
                 console.log(
                     "sender:",
                     clients[socket_id]["peer_id"],
                     "\nreceiver:",
                     clients[socket.id]["peer_id"]
                 );
-
+                //receiver
+                clients[socket.id]["pair_socket_id"] = socket_id;
                 socket.emit("senderPeerId", clients[socket_id]["peer_id"]);
+
+                //sender
+                clients[socket_id]["pair_socket_id"] = socket.id;
                 io.to(socket_id).emit("receiverPeerId", clients[socket.id]["peer_id"]);
             }
         }
+        console.log(clients);
+    });
+    socket.on("peerConnected", () => {
+        io.to(clients[socket.id]["pair_socket_id"]).emit("peerConnected");
     });
 
     socket.on("disconnect", () => {

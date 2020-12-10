@@ -60,11 +60,17 @@ export default class App extends Component {
       socket.on("senderPeerId", (senderPeerId) => {
         console.log("Pairing complete, found sender peer id:", senderPeerId);
       });
+
       socket.on("receiverPeerId", (receiverPeerId) => {
         console.log(
           "Pairing complete, found receiver peer id:",
           receiverPeerId
         );
+        peer.connect(receiverPeerId);
+      });
+
+      socket.on("peerConnected", () => {
+        console.log("peer connected");
       });
     });
 
@@ -75,10 +81,9 @@ export default class App extends Component {
       socket.emit("peerid", id);
     });
 
-    // const conn = peer.connect("02ce0dd9-183d-4f4d-bdf6-7ce5e14a065d");
-
     peer.on("connection", function (conn) {
       console.log("peer connected", conn);
+      socket.emit("peerConnected");
     });
 
     // this.checkApi();
