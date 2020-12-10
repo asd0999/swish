@@ -69,10 +69,48 @@ export default class App extends Component {
         "Call accpeted by receiver, sending peer signal to create connection"
       );
       peer.signal(signal);
+
+      peer.on("data", (data) => {
+        console.log(data);
+      });
     });
   }
 
-  acceptCall() {}
+  acceptCall(callerData) {
+    peer = new Peer({
+      initiator: false,
+      trickle: false,
+      config: {
+        iceServers: [
+          {
+            urls: "stun:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+          {
+            urls: "turn:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+        ],
+      },
+    });
+
+    // receiver peer instance
+    console.log("Creating Peer instance", peer);
+
+    peer.on("signal", (data) => {
+      //breaking here
+      socket.emit("acceptCall", { signal: data, to: this.state.peer_sid });
+      console.log("Call accepted");
+    });
+
+    peer.on("data", (data) => {
+      console.log(data);
+    });
+
+    peer.signal(callerData.signal);
+  }
 
   componentDidMount() {
     // const self = this;
@@ -120,25 +158,9 @@ export default class App extends Component {
         this.callPeer(this.state.peer_sid);
       });
 
-      socket.on("calling", (callerSignal) => {
+      socket.on("calling", (data) => {
         console.log("Call received");
-        peer = new Peer({
-          initiator: false,
-          trickle: false,
-        });
-
-        // receiver peer instance
-        console.log("Creating Peer instance", peer);
-
-        // this.acceptCall(peer);
-
-        peer.on("signal", (data) => {
-          //breaking here
-          socket.emit("acceptCall", { signal: data, to: this.state.peer_sid });
-          console.log("Call accepted");
-        });
-
-        peer.signal(callerSignal.signal);
+        this.acceptCall(data);
       });
     });
   }
@@ -168,7 +190,8 @@ export default class App extends Component {
   }
 
   sendMessage(data) {
-    conn.send(data);
+    console.log("sending...", data);
+    peer.send(data);
   }
 
   render() {
