@@ -7,6 +7,7 @@ import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 
 let conn = null;
+let peer = null;
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -29,11 +30,11 @@ export default class App extends Component {
     this.pairPeers = this.pairPeers.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.callPeer = this.callPeer.bind(this);
+    this.acceptCall = this.acceptCall.bind(this);
   }
 
-  callPeer() {
-    console.log("callPeer function called");
-    const peer = new Peer({
+  callPeer(id) {
+    peer = new Peer({
       initiator: true,
       trickle: false,
       config: {
@@ -52,20 +53,26 @@ export default class App extends Component {
       },
     });
 
-    console.log(peer);
+    // sender peer instance
+    console.log("Creating Peer instance", peer);
 
     peer.on("signal", (data) => {
-      socket.emit("callUser", {
-        userToCall: "id",
+      socket.emit("callPeer", {
+        peerToCall: id,
         signalData: data,
         from: this.state.my_sid,
       });
     });
 
     socket.on("callAccepted", (signal) => {
+      console.log(
+        "Call accpeted by receiver, sending peer signal to create connection"
+      );
       peer.signal(signal);
     });
   }
+
+  acceptCall() {}
 
   componentDidMount() {
     // const self = this;
@@ -110,52 +117,30 @@ export default class App extends Component {
           peer_sid: receiverSocketId,
         });
 
-        this.callPeer();
+        this.callPeer(this.state.peer_sid);
+      });
 
-        // //sender peer data connection
-        // conn = peer.connect(receiverPeerId);
-        // // conn.on("open", function () {
-        // console.log("peer connected", conn);
-        // conn.on("data", function (data) {
-        //   // console.log(conn);
-        //   console.log(data);
-        // });
-        // // });
+      socket.on("calling", (callerSignal) => {
+        console.log("Call received");
+        peer = new Peer({
+          initiator: false,
+          trickle: false,
+        });
 
-        // sender receives ack for peer connection
-        // socket.on("peerConnected", () => {
-        //   console.log("peer connected");
-        // });
+        // receiver peer instance
+        console.log("Creating Peer instance", peer);
+
+        // this.acceptCall(peer);
+
+        peer.on("signal", (data) => {
+          //breaking here
+          socket.emit("acceptCall", { signal: data, to: this.state.peer_sid });
+          console.log("Call accepted");
+        });
+
+        peer.signal(callerSignal.signal);
       });
     });
-
-    // // sender + receiver --> conect to peerJS server and obtain peer IDs
-    // peer.on("open", function (id) {
-    //   console.log("My peer ID is: " + id);
-    //   self.peerHandler(id);
-    //   socket.emit("peerid", id);
-    // });
-
-    // // receiver peer data connection
-    // peer.on("connection", function (dataConnection) {
-    //   conn = dataConnection;
-    //   // conn.on("open", function () {
-    //   console.log("peer connected", conn);
-    //   conn.on("data", function (data) {
-    //     // console.log(conn);
-    //     console.log(data);
-    //   });
-    //   // });
-
-    // console.log("peer connected", conn);
-    // socket.emit("peerConnected"); // receiver sends event to server
-
-    // conn.on("data", function (data) {
-    //   console.log(data);
-    // });
-    // });
-
-    // this.checkApi();
   }
 
   checkApi() {
@@ -168,13 +153,6 @@ export default class App extends Component {
         console.log(json);
       });
   }
-
-  // peerHandler(id) {
-  //   this.setState({
-  //     my_peerid: id,
-  //     peerConnection: true,
-  //   });
-  // }
 
   requestOTP() {
     console.log("requesting otp");

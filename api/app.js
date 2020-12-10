@@ -168,6 +168,19 @@ io.on("connection", function(socket) {
     //     io.to(clients[socket.id]["pair_socket_id"]).emit("peerConnected");
     // });
 
+    socket.on("callPeer", (data) => {
+        console.log("calling peer");
+        io.to(data.peerToCall).emit("calling", {
+            signal: data.signalData,
+            from: data.from,
+        });
+    });
+
+    socket.on("acceptCall", (data) => {
+        console.log("Call accepted by receiver");
+        io.to(data.to).emit("callAccepted", data.signal);
+    });
+
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
         delete clients[socket.id];
