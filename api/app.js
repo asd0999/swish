@@ -112,6 +112,7 @@ io.on("connection", function(socket) {
         clients[socket.id] = {};
     });
 
+    // both sender and receiver peers send their peer ids to server
     socket.on("peerid", (id) => {
         console.log("peerid received for socket.id", socket.id, "-->", id);
         if (clients[socket.id]) {
@@ -120,6 +121,7 @@ io.on("connection", function(socket) {
         console.log(clients);
     });
 
+    // sender requests an OTP for authentication/pairing with receiver
     socket.on("OTPrequest", () => {
         console.log("otp request recd");
         const otp = generateOTP();
@@ -131,6 +133,7 @@ io.on("connection", function(socket) {
         console.log(clients);
     });
 
+    // receiver makes a request to pari with sender after entering the OTP
     socket.on("pairingRequest", (otp) => {
         console.log("otp received:", otp);
         console.log("from peer id:", clients[socket.id]["peer_id"]);
@@ -148,20 +151,25 @@ io.on("connection", function(socket) {
                     "\nreceiver:",
                     clients[socket.id]["peer_id"]
                 );
-                //receiver
+                //receiver peer
                 clients[socket.id]["pair_socket_id"] = socket_id;
-                socket.emit("senderPeerId", clients[socket_id]["peer_id"]);
+                // socket.emit("senderPeerId", clients[socket_id]["peer_id"]);
+                clients[socket.id]["otp"] = "matched";
 
-                //sender
+                //sender peer
                 clients[socket_id]["pair_socket_id"] = socket.id;
                 io.to(socket_id).emit("receiverPeerId", clients[socket.id]["peer_id"]);
+                clients[socket_id]["otp"] = "matched";
             }
         }
         console.log(clients);
     });
-    socket.on("peerConnected", () => {
-        io.to(clients[socket.id]["pair_socket_id"]).emit("peerConnected");
-    });
+
+    // //received from receiver upon making data connection
+    // socket.on("peerConnected", () => {
+    //     //sending ack to sender that data connection has been established
+    //     io.to(clients[socket.id]["pair_socket_id"]).emit("peerConnected");
+    // });
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);

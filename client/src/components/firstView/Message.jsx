@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import Message from "../firstView/Message";
 
-export default class EnterOTP extends Component {
+export default class Message extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      otp: "",
+      message: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,9 +18,9 @@ export default class EnterOTP extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.pairPeers(this.state.otp);
+    this.props.sendMessage(this.state.message);
     this.setState({
-      otp: "",
+      message: "",
     });
   }
 
@@ -29,18 +28,17 @@ export default class EnterOTP extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="otp">
+          <label htmlFor="message">
             <input
               type="text"
-              name="otp"
-              id="otp"
+              name="message"
+              id="message"
               onChange={this.handleChange}
-              value={this.state.otp}
+              value={this.state.message}
             />
           </label>
-          <input type="submit" value="PAIR" />
+          <input type="submit" value="SEND" />
         </form>
-        <Message sendMessage={this.props.sendMessage} />
       </div>
     );
   }
