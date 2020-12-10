@@ -107,19 +107,19 @@ io.on("connection", function(socket) {
     console.log("Client connected:", socket.id);
 
     socket.on("clienthello", () => {
-        console.log("clienthello received");
+        // console.log("clienthello received");
         socket.emit("serverack", socket.id);
         clients[socket.id] = {};
     });
 
     // both sender and receiver peers send their peer ids to server
-    socket.on("peerid", (id) => {
-        console.log("peerid received for socket.id", socket.id, "-->", id);
-        if (clients[socket.id]) {
-            clients[socket.id]["peer_id"] = id;
-        }
-        console.log(clients);
-    });
+    // socket.on("peerid", (id) => {
+    //     console.log("peerid received for socket.id", socket.id, "-->", id);
+    //     if (clients[socket.id]) {
+    //         clients[socket.id]["peer_id"] = id;
+    //     }
+    //     console.log(clients);
+    // });
 
     // sender requests an OTP for authentication/pairing with receiver
     socket.on("OTPrequest", () => {
@@ -136,8 +136,10 @@ io.on("connection", function(socket) {
     // receiver makes a request to pari with sender after entering the OTP
     socket.on("pairingRequest", (otp) => {
         console.log("otp received:", otp);
-        console.log("from peer id:", clients[socket.id]["peer_id"]);
-        clients[socket.id]["otp"] = otp;
+        console.log("from socket id:", socket.id);
+        if (clients[socket.id]) {
+            clients[socket.id]["otp"] = otp;
+        }
 
         for (const socket_id of Object.keys(clients)) {
             if (socket_id == socket.id) {
@@ -145,20 +147,15 @@ io.on("connection", function(socket) {
             }
             if (clients[socket_id]["otp"] == clients[socket.id]["otp"]) {
                 console.log("Found matching otp. Pairing complete:");
-                console.log(
-                    "sender:",
-                    clients[socket_id]["peer_id"],
-                    "\nreceiver:",
-                    clients[socket.id]["peer_id"]
-                );
-                //receiver peer
+                console.log("sender:", socket_id, "\nreceiver:", socket.id);
+                //receiver send pair_socket_id
                 clients[socket.id]["pair_socket_id"] = socket_id;
-                // socket.emit("senderPeerId", clients[socket_id]["peer_id"]);
+                socket.emit("senderSocketId", socket_id);
                 clients[socket.id]["otp"] = "matched";
 
-                //sender peer
+                //sender send pair_socket_id
                 clients[socket_id]["pair_socket_id"] = socket.id;
-                io.to(socket_id).emit("receiverPeerId", clients[socket.id]["peer_id"]);
+                io.to(socket_id).emit("receiverSocketId", socket.id);
                 clients[socket_id]["otp"] = "matched";
             }
         }

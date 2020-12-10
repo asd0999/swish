@@ -1,29 +1,10 @@
 import React, { Component } from "react";
-import Peer from "peerjs";
+import Peer from "simple-peer";
 import { io } from "socket.io-client";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Choice from "./components/firstView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
-
-const peer = new Peer({
-  host: "tg1799.itp.io",
-  port: 9000,
-  path: "/",
-  secure: true,
-  config: {
-    iceServers: [
-      { url: "stun:stun.l.google.com:19302" },
-      {
-        url: "turn:numb.viagenie.ca",
-        username: "xxx@gmail.com",
-        credential: "yyy",
-      },
-    ],
-    sdpSemantics: "unified-plan",
-  },
-  // debug: 3,
-});
 
 let conn = null;
 
@@ -35,21 +16,59 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      my_peerid: null,
-      socket_id: null,
+      // my_peerid: null,
+      my_sid: null,
+      peer_sid: null,
       socketConnection: false,
       peerConnection: false,
       otp: null,
     };
     this.checkApi = this.checkApi.bind(this);
-    this.peerHandler = this.peerHandler.bind(this);
+    // this.peerHandler = this.peerHandler.bind(this);
     this.requestOTP = this.requestOTP.bind(this);
     this.pairPeers = this.pairPeers.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.callPeer = this.callPeer.bind(this);
+  }
+
+  callPeer() {
+    console.log("callPeer function called");
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      config: {
+        iceServers: [
+          {
+            urls: "stun:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+          {
+            urls: "turn:numb.viagenie.ca",
+            username: "sultan1640@gmail.com",
+            credential: "98376683",
+          },
+        ],
+      },
+    });
+
+    console.log(peer);
+
+    peer.on("signal", (data) => {
+      socket.emit("callUser", {
+        userToCall: "id",
+        signalData: data,
+        from: this.state.my_sid,
+      });
+    });
+
+    socket.on("callAccepted", (signal) => {
+      peer.signal(signal);
+    });
   }
 
   componentDidMount() {
-    const self = this;
+    // const self = this;
     socket.on("connect", () => {
       console.log("connected to server");
       this.setState({
@@ -61,7 +80,7 @@ export default class App extends Component {
       socket.on("serverack", (data) => {
         console.log("server ack received", data);
         this.setState({
-          socket_id: data,
+          my_sid: data,
         });
       });
 
@@ -69,23 +88,39 @@ export default class App extends Component {
         this.setState({
           otp: otp,
         });
+        console.log("otp received, waiting for receiver to pair");
       });
 
-      // socket.on("senderPeerId", (senderPeerId) => {
-      //   console.log("Pairing complete, found sender peer id:", senderPeerId);
-      // });
-
-      socket.on("receiverPeerId", (receiverPeerId) => {
-        console.log("Pairing complete");
-
-        //sender peer data connection
-        conn = peer.connect(receiverPeerId);
-        // conn.on("open", function () {
-        console.log("peer connected", conn);
-        conn.on("data", function (data) {
-          console.log(data);
+      socket.on("senderSocketId", (senderSocketId) => {
+        console.log(
+          "Pairing complete, found sender Socket id:",
+          senderSocketId
+        );
+        this.setState({
+          peer_sid: senderSocketId,
         });
+      });
+
+      socket.on("receiverSocketId", (receiverSocketId) => {
+        console.log(
+          "Pairing complete, found receiver Socket id:",
+          receiverSocketId
+        );
+        this.setState({
+          peer_sid: receiverSocketId,
+        });
+
+        this.callPeer();
+
+        // //sender peer data connection
+        // conn = peer.connect(receiverPeerId);
+        // // conn.on("open", function () {
+        // console.log("peer connected", conn);
+        // conn.on("data", function (data) {
+        //   // console.log(conn);
+        //   console.log(data);
         // });
+        // // });
 
         // sender receives ack for peer connection
         // socket.on("peerConnected", () => {
@@ -94,30 +129,31 @@ export default class App extends Component {
       });
     });
 
-    // sender + receiver --> conect to peerJS server and obtain peer IDs
-    peer.on("open", function (id) {
-      console.log("My peer ID is: " + id);
-      self.peerHandler(id);
-      socket.emit("peerid", id);
-    });
+    // // sender + receiver --> conect to peerJS server and obtain peer IDs
+    // peer.on("open", function (id) {
+    //   console.log("My peer ID is: " + id);
+    //   self.peerHandler(id);
+    //   socket.emit("peerid", id);
+    // });
 
-    // receiver peer data connection
-    peer.on("connection", function (dataConnection) {
-      conn = dataConnection;
-      // conn.on("open", function () {
-      console.log("peer connected", conn);
-      conn.on("data", function (data) {
-        console.log(data);
-      });
-      // });
+    // // receiver peer data connection
+    // peer.on("connection", function (dataConnection) {
+    //   conn = dataConnection;
+    //   // conn.on("open", function () {
+    //   console.log("peer connected", conn);
+    //   conn.on("data", function (data) {
+    //     // console.log(conn);
+    //     console.log(data);
+    //   });
+    //   // });
 
-      // console.log("peer connected", conn);
-      // socket.emit("peerConnected"); // receiver sends event to server
+    // console.log("peer connected", conn);
+    // socket.emit("peerConnected"); // receiver sends event to server
 
-      // conn.on("data", function (data) {
-      //   console.log(data);
-      // });
-    });
+    // conn.on("data", function (data) {
+    //   console.log(data);
+    // });
+    // });
 
     // this.checkApi();
   }
@@ -133,12 +169,12 @@ export default class App extends Component {
       });
   }
 
-  peerHandler(id) {
-    this.setState({
-      my_peerid: id,
-      peerConnection: true,
-    });
-  }
+  // peerHandler(id) {
+  //   this.setState({
+  //     my_peerid: id,
+  //     peerConnection: true,
+  //   });
+  // }
 
   requestOTP() {
     console.log("requesting otp");
@@ -148,10 +184,12 @@ export default class App extends Component {
   pairPeers(otp) {
     console.log("attempting to pair peers");
     socket.emit("pairingRequest", otp);
+    this.setState({
+      otp: otp,
+    });
   }
 
   sendMessage(data) {
-    // console.log(data, conn);
     conn.send(data);
   }
 
@@ -183,6 +221,7 @@ export default class App extends Component {
                   {...props}
                   pairPeers={this.pairPeers}
                   sendMessage={this.sendMessage}
+                  // callPeer={this.callPeer}
                 />
               )}
             />

@@ -23,6 +23,7 @@ export default class EnterOTP extends Component {
     this.setState({
       otp: "",
     });
+    // this.props.callPeer();
   }
 
   render() {
