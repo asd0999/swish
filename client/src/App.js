@@ -6,8 +6,8 @@ import Choice from "./components/firstView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 
-let conn = null;
 let peer = null;
+let stream = null;
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -37,6 +37,7 @@ export default class App extends Component {
     peer = new Peer({
       initiator: true,
       trickle: false,
+      // stream: stream,
       config: {
         iceServers: [
           {
@@ -65,13 +66,16 @@ export default class App extends Component {
     });
 
     socket.on("callAccepted", (signal) => {
-      console.log(
-        "Call accpeted by receiver, sending peer signal to create connection"
-      );
+      console.log("Call accepted by receiver, peer connection established");
+      this.setState({
+        peerConnection: true,
+      });
       peer.signal(signal);
 
       peer.on("data", (data) => {
-        console.log(data);
+        // console.log(data);
+        let string = new TextDecoder("utf-8").decode(data);
+        console.log(string);
       });
     });
   }
@@ -80,6 +84,7 @@ export default class App extends Component {
     peer = new Peer({
       initiator: false,
       trickle: false,
+      // stream: stream,
       config: {
         iceServers: [
           {
@@ -102,14 +107,19 @@ export default class App extends Component {
     peer.on("signal", (data) => {
       //breaking here
       socket.emit("acceptCall", { signal: data, to: this.state.peer_sid });
-      console.log("Call accepted");
+      console.log("Call accepted, peer connection established");
     });
 
     peer.on("data", (data) => {
-      console.log(data);
+      // console.log(data);
+      let string = new TextDecoder("utf-8").decode(data);
+      console.log(string);
     });
 
     peer.signal(callerData.signal);
+    this.setState({
+      peerConnection: true,
+    });
   }
 
   componentDidMount() {
@@ -198,7 +208,7 @@ export default class App extends Component {
     return (
       <div>
         <h1>Swish</h1>
-        <h3>Peer to peer file transfer</h3>
+        {/* <h3>Peer to peer file transfer</h3> */}
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
@@ -212,6 +222,7 @@ export default class App extends Component {
                   requestOTP={this.requestOTP}
                   otp={this.state.otp}
                   sendMessage={this.sendMessage}
+                  peerConnection={this.state.peerConnection}
                 />
               )}
             />
@@ -222,7 +233,7 @@ export default class App extends Component {
                   {...props}
                   pairPeers={this.pairPeers}
                   sendMessage={this.sendMessage}
-                  // callPeer={this.callPeer}
+                  peerConnection={this.state.peerConnection}
                 />
               )}
             />

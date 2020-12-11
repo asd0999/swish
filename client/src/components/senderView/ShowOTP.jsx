@@ -13,11 +13,17 @@ export default class ShowOTP extends Component {
   render() {
     return (
       <div>
-        <h1>{this.props.otp}</h1>
-
-        <button onClick={this.props.requestOTP}>Refresh OTP</button>
-
-        <Message sendMessage={this.props.sendMessage} />
+        {this.props.peerConnection ? (
+          <>
+            <span>Peer connnection established</span>
+            <Message sendMessage={this.props.sendMessage} />
+          </>
+        ) : (
+          <>
+            <h1>{this.props.otp}</h1>
+            <button onClick={this.props.requestOTP}>Refresh OTP</button>
+          </>
+        )}
       </div>
     );
   }

@@ -96,8 +96,7 @@ function verifyToken(req, res, next) {
 
 // OTP
 const generateOTP = () => {
-    const r = () => Math.floor((1 + Math.random()) * 0x100000).toString(16);
-    return r();
+    return Math.floor((1 + Math.random()) * 100000);
 };
 
 // SOCKET CONNECTION

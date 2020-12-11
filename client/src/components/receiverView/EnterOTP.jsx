@@ -29,19 +29,25 @@ export default class EnterOTP extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="otp">
-            <input
-              type="text"
-              name="otp"
-              id="otp"
-              onChange={this.handleChange}
-              value={this.state.otp}
-            />
-          </label>
-          <input type="submit" value="PAIR" />
-        </form>
-        <Message sendMessage={this.props.sendMessage} />
+        {this.props.peerConnection ? (
+          <>
+            <span>Peer connnection established</span>
+            <Message sendMessage={this.props.sendMessage} />
+          </>
+        ) : (
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="otp">
+              <input
+                type="text"
+                name="otp"
+                id="otp"
+                onChange={this.handleChange}
+                value={this.state.otp}
+              />
+            </label>
+            <input type="submit" value="PAIR" />
+          </form>
+        )}
       </div>
     );
   }
