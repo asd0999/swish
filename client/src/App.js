@@ -200,7 +200,7 @@ export default class App extends Component {
   }
 
   sendMessage(data) {
-    console.log("sending...", data);
+    // console.log("sending...", data);
     peer.send(data);
   }
 
