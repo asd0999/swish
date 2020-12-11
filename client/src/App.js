@@ -118,13 +118,14 @@ export default class App extends Component {
       console.log("Call accepted, peer connection established");
     });
 
-    // peer.on("data", (data) => {
-    //   // console.log(data);
-    //   let string = new TextDecoder("utf-8").decode(data);
-    //   console.log(string);
-    // });
+    peer.on("data", (data) => {
+      //message part
+      let string = new TextDecoder("utf-8").decode(data);
+      console.log(string);
 
-    peer.on("data", this.handleReceivingData);
+      // file part
+      this.handleReceivingData(data);
+    });
 
     peer.signal(callerData.signal);
     this.setState({
@@ -297,7 +298,6 @@ export default class App extends Component {
                   otp={this.state.otp}
                   sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
-                  // peer={peer}
                   sendFile={this.sendFile}
                   selectFile={this.selectFile}
                 />

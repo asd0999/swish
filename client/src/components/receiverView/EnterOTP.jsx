@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Message from "../firstView/Message";
+import SendFile from "../firstView/SendFile";
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -23,7 +24,6 @@ export default class EnterOTP extends Component {
     this.setState({
       otp: "",
     });
-    // this.props.callPeer();
   }
 
   render() {
@@ -33,13 +33,20 @@ export default class EnterOTP extends Component {
           <>
             <span>Peer connnection established</span>
             <p></p>
-            {/* <Message sendMessage={this.props.sendMessage} /> */}
+            <SendFile
+              selectFile={this.props.selectFile}
+              sendFile={this.props.sendFile}
+            />
+            <p></p>
             {this.props.gotFile ? (
               <>
                 <span>You have received a file</span>
                 <button onClick={this.props.download}>Download</button>
               </>
             ) : null}
+            <p></p>
+            <span>Send an instant message</span>
+            <Message sendMessage={this.props.sendMessage} />
           </>
         ) : (
           <form onSubmit={this.handleSubmit}>
