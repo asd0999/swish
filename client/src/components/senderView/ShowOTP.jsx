@@ -2,31 +2,47 @@ import React, { Component } from "react";
 import Message from "../firstView/Message";
 
 export default class ShowOTP extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      file: null,
-      // gotFile: false,
-    };
-    // this.fileInput = React.createRef();
-    // this.selectFile = this.selectFile.bind(this);
-    this.readFile = this.readFile.bind(this);
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     file: null,
+  //   };
+  // this.selectFile = this.selectFile.bind(this);
+  // this.sendFile = this.sendFile.bind(this);
+  // }
 
-  readFile(event) {
-    console.log(event);
-    const file = event.target.files[0];
-    let reader = new FileReader();
-    reader.onload = function () {
-      console.log(this);
-      let arrayBuffer = this.result;
-      let array = new Uint8Array(arrayBuffer);
-      let binaryString = String.fromCharCode.apply(null, array);
+  // selectFile(event) {
+  //   console.log(event);
+  //   this.setState({
+  //     file: event.target.files[0], //arrayBuffer
+  //   });
+  // }
 
-      console.log(binaryString);
-    };
-    reader.readAsArrayBuffer(file);
-  }
+  // sendFile() {
+  //   const peer = this.props.peer;
+  //   const stream = this.state.file.stream();
+  //   const reader = stream.getReader();
+
+  //   reader.read().then((obj) => {
+  //     handleReading(obj.done, obj.value);
+  //   });
+
+  //   function handleReading(done, value) {
+  //     if (done) {
+  //       peer.write(
+  //         JSON.stringify({
+  //           done: true,
+  //           fileName: this.state.file.name,
+  //         })
+  //       );
+  //     }
+
+  //     peer.write(value);
+  //     reader.read().then((obj) => {
+  //       handleReading(obj.done, obj.value);
+  //     });
+  //   }
+  // }
 
   componentDidMount() {
     this.props.requestOTP();
@@ -46,12 +62,13 @@ export default class ShowOTP extends Component {
                   <input
                     type="file"
                     id="select-file-input"
-                    // ref={this.fileInput}
-                    onChange={this.readFile}
+                    onChange={this.props.selectFile}
                   />
                 </div>
                 <div id="dialog-footer">
-                  <button id="ok-button">Ok</button>
+                  <button id="ok-button" onClick={this.props.sendFile}>
+                    Send
+                  </button>
                   <button id="cancel-button" className="cancel-button">
                     Cancel
                   </button>

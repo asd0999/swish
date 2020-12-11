@@ -5,9 +5,13 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Choice from "./components/firstView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
+import streamSaver from "streamsaver";
+// import Worker from "../public/worker";
 
 let peer = null;
-let stream = null;
+const worker = new Worker("../worker.js");
+console.log(worker);
+let fileToSend = null;
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -31,6 +35,10 @@ export default class App extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.callPeer = this.callPeer.bind(this);
     this.acceptCall = this.acceptCall.bind(this);
+    this.handleReceivingData = this.handleReceivingData.bind(this);
+    this.download = this.download.bind(this);
+    this.selectFile = this.selectFile.bind(this);
+    this.sendFile = this.sendFile.bind(this);
   }
 
   callPeer(id) {
@@ -110,15 +118,42 @@ export default class App extends Component {
       console.log("Call accepted, peer connection established");
     });
 
-    peer.on("data", (data) => {
-      // console.log(data);
-      let string = new TextDecoder("utf-8").decode(data);
-      console.log(string);
-    });
+    // peer.on("data", (data) => {
+    //   // console.log(data);
+    //   let string = new TextDecoder("utf-8").decode(data);
+    //   console.log(string);
+    // });
+
+    peer.on("data", this.handleReceivingData);
 
     peer.signal(callerData.signal);
     this.setState({
       peerConnection: true,
+    });
+  }
+
+  handleReceivingData(data) {
+    if (data.toString().includes("done")) {
+      const parsed = JSON.parse(data);
+      let fileName = parsed.fileName;
+      this.setState({
+        gotFile: true,
+        fileName: fileName,
+      });
+    } else {
+      worker.postMessage(data);
+    }
+  }
+
+  download() {
+    // this.setState({
+    //   gotFile: false,
+    // });
+    worker.postMessage("download");
+    worker.addEventListener("message", (event) => {
+      const stream = event.data.stream();
+      const fileStream = streamSaver.createWriteStream(this.state.fileName);
+      stream.pipeTo(fileStream);
     });
   }
 
@@ -204,6 +239,40 @@ export default class App extends Component {
     peer.send(data);
   }
 
+  selectFile(event) {
+    console.log(event);
+    fileToSend = event.target.files[0];
+    this.setState({
+      file: event.target.files[0], //arrayBuffer
+    });
+  }
+
+  sendFile() {
+    console.log("send file function");
+    const stream = fileToSend.stream();
+    const reader = stream.getReader();
+
+    reader.read().then((obj) => {
+      handleReading(obj.done, obj.value);
+    });
+
+    function handleReading(done, value) {
+      if (done) {
+        peer.write(
+          JSON.stringify({
+            done: true,
+            fileName: fileToSend["name"], //whycanti access state here?
+          })
+        );
+      }
+
+      peer.write(value);
+      reader.read().then((obj) => {
+        handleReading(obj.done, obj.value);
+      });
+    }
+  }
+
   render() {
     return (
       <div>
@@ -223,6 +292,9 @@ export default class App extends Component {
                   otp={this.state.otp}
                   sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
+                  // peer={peer}
+                  sendFile={this.sendFile}
+                  selectFile={this.selectFile}
                 />
               )}
             />
@@ -234,6 +306,8 @@ export default class App extends Component {
                   pairPeers={this.pairPeers}
                   sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
+                  gotFile={this.state.gotFile}
+                  download={this.download}
                 />
               )}
             />

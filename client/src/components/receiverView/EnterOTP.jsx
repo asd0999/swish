@@ -33,6 +33,9 @@ export default class EnterOTP extends Component {
           <>
             <span>Peer connnection established</span>
             <Message sendMessage={this.props.sendMessage} />
+            {this.props.gotFile ? (
+              <button onClick={this.props.download}>Download</button>
+            ) : null}
           </>
         ) : (
           <form onSubmit={this.handleSubmit}>
