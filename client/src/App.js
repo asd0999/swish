@@ -132,31 +132,6 @@ export default class App extends Component {
     });
   }
 
-  handleReceivingData(data) {
-    if (data.toString().includes("done")) {
-      const parsed = JSON.parse(data);
-      let fileName = parsed.fileName;
-      this.setState({
-        gotFile: true,
-        fileName: fileName,
-      });
-    } else {
-      worker.postMessage(data);
-    }
-  }
-
-  download() {
-    // this.setState({
-    //   gotFile: false,
-    // });
-    worker.postMessage("download");
-    worker.addEventListener("message", (event) => {
-      const stream = event.data.stream();
-      const fileStream = streamSaver.createWriteStream(this.state.fileName);
-      stream.pipeTo(fileStream);
-    });
-  }
-
   componentDidMount() {
     // const self = this;
     socket.on("connect", () => {
@@ -241,15 +216,16 @@ export default class App extends Component {
 
   selectFile(event) {
     console.log(event);
-    fileToSend = event.target.files[0];
+    // fileToSend = event.target.files[0];
     this.setState({
       file: event.target.files[0], //arrayBuffer
     });
   }
 
   sendFile() {
+    const self = this;
     console.log("send file function");
-    const stream = fileToSend.stream();
+    const stream = this.state.file.stream();
     const reader = stream.getReader();
 
     reader.read().then((obj) => {
@@ -261,16 +237,45 @@ export default class App extends Component {
         peer.write(
           JSON.stringify({
             done: true,
-            fileName: fileToSend["name"], //whycanti access state here?
+            fileName: self.state.file.name,
           })
         );
+        console.log("sent EOF");
+        return;
       }
 
       peer.write(value);
+      console.log("sent a chunk");
       reader.read().then((obj) => {
         handleReading(obj.done, obj.value);
       });
     }
+  }
+
+  handleReceivingData(data) {
+    if (data.toString().includes("done")) {
+      console.log("the last chunk was End Of File, ready to download");
+      const parsed = JSON.parse(data);
+      let fileName = parsed.fileName;
+      this.setState({
+        gotFile: true,
+        fileName: fileName,
+      });
+    } else {
+      worker.postMessage(data); //send a chunk to the worker
+    }
+  }
+
+  download() {
+    this.setState({
+      gotFile: false,
+    });
+    worker.postMessage("download");
+    worker.addEventListener("message", (event) => {
+      const stream = event.data.stream();
+      const fileStream = streamSaver.createWriteStream(this.state.fileName);
+      stream.pipeTo(fileStream);
+    });
   }
 
   render() {

@@ -54,7 +54,8 @@ export default class ShowOTP extends Component {
         {this.props.peerConnection ? (
           <>
             <span>Peer connnection established</span>
-            <Message sendMessage={this.props.sendMessage} />
+            <p></p>
+            {/* <Message sendMessage={this.props.sendMessage} /> */}
             <div id="select-file-dialog">
               <div id="dialog-content">
                 <div id="select-file">

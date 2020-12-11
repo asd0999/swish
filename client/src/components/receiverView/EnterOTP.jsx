@@ -32,9 +32,13 @@ export default class EnterOTP extends Component {
         {this.props.peerConnection ? (
           <>
             <span>Peer connnection established</span>
-            <Message sendMessage={this.props.sendMessage} />
+            <p></p>
+            {/* <Message sendMessage={this.props.sendMessage} /> */}
             {this.props.gotFile ? (
-              <button onClick={this.props.download}>Download</button>
+              <>
+                <span>You have received a file</span>
+                <button onClick={this.props.download}>Download</button>
+              </>
             ) : null}
           </>
         ) : (
@@ -46,6 +50,7 @@ export default class EnterOTP extends Component {
                 id="otp"
                 onChange={this.handleChange}
                 value={this.state.otp}
+                placeholder="Enter OTP"
               />
             </label>
             <input type="submit" value="PAIR" />
