@@ -120,8 +120,8 @@ export default class App extends Component {
 
     peer.on("data", (data) => {
       //message part
-      let string = new TextDecoder("utf-8").decode(data);
-      console.log(string);
+      // let string = new TextDecoder("utf-8").decode(data);
+      // console.log(string);
 
       // file part
       this.handleReceivingData(data);
@@ -148,6 +148,10 @@ export default class App extends Component {
         this.setState({
           my_sid: data,
         });
+      });
+
+      socket.on("message", (data) => {
+        console.log(data);
       });
 
       socket.on("otp", (otp) => {
@@ -212,7 +216,8 @@ export default class App extends Component {
 
   sendMessage(data) {
     // console.log("sending...", data);
-    peer.send(data);
+    // peer.send(data);
+    socket.emit("message", data);
   }
 
   selectFile(event) {

@@ -180,6 +180,10 @@ io.on("connection", function(socket) {
         io.to(data.to).emit("callAccepted", data.signal);
     });
 
+    socket.on("message", (data) => {
+        io.to(clients[socket.id].pair_socket_id).emit("message", data);
+    });
+
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
         delete clients[socket.id];
