@@ -1,12 +1,10 @@
 // // dependencies
 const express = require("express");
 const http = require("http");
-const WebSocket = require("ws");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const morgan = require("morgan");
 const socketIo = require("socket.io");
-const { createWebSocketStream } = require("ws");
 // const https = require("https");
 // const fs = require("fs");
 
@@ -36,11 +34,6 @@ app.get("/api", (req, res) => {
     res.json({
         message: "API is working",
     });
-});
-
-// index.html file for socket.io checking
-app.get("/api/io", (req, res) => {
-    res.sendFile(__dirname + "/index.html");
 });
 
 // protected post route

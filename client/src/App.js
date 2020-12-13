@@ -6,12 +6,11 @@ import Choice from "./components/firstView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
-// import Worker from "../public/worker";
 
 let peer = null;
 const worker = new Worker("../worker.js");
 console.log(worker);
-let fileToSend = null;
+// let fileToSend = null;
 
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
@@ -215,9 +214,8 @@ export default class App extends Component {
   }
 
   sendMessage(data) {
-    // console.log("sending...", data);
-    // peer.send(data);
-    socket.emit("message", data);
+    // peer.send(data); //via peer
+    socket.emit("message", data); //via socket
   }
 
   selectFile(event) {
@@ -253,7 +251,7 @@ export default class App extends Component {
       peer.write(value);
       console.log("sent a chunk");
       reader.read().then((obj) => {
-        handleReading(obj.done, obj.value);
+        setTimeout(handleReading(obj.done, obj.value), 100);
       });
     }
   }

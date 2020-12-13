@@ -7,9 +7,7 @@ this.addEventListener("message", (event) => {
         console.log("downloading file");
         array = [];
     } else {
-        if (array.length > 0) {
-            console.log("got a chunk");
-        }
+        console.log("got a chunk");
         array.push(event.data);
     }
 });
