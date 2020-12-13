@@ -19,6 +19,13 @@ export default class ShowOTP extends Component {
               sendFile={this.props.sendFile}
             />
             <p></p>
+            {this.props.gotFile ? (
+              <>
+                <span>You have received a file</span>
+                <button onClick={this.props.download}>Download</button>
+              </>
+            ) : null}
+            <p></p>
             <span>Send an instant message</span>
             <Message sendMessage={this.props.sendMessage} />
           </>

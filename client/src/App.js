@@ -80,9 +80,12 @@ export default class App extends Component {
       peer.signal(signal);
 
       peer.on("data", (data) => {
-        // console.log(data);
-        let string = new TextDecoder("utf-8").decode(data);
-        console.log(string);
+        // message part
+        // let string = new TextDecoder("utf-8").decode(data);
+        // console.log(string);
+
+        // file part
+        this.handleReceivingData(data);
       });
     });
   }
@@ -219,7 +222,7 @@ export default class App extends Component {
   }
 
   selectFile(event) {
-    console.log(event);
+    console.log("FUNCTION - select file");
     // fileToSend = event.target.files[0];
     this.setState({
       file: event.target.files[0], //arrayBuffer
@@ -227,6 +230,7 @@ export default class App extends Component {
   }
 
   sendFile() {
+    console.log("FUNCTION - send file");
     const self = this;
     console.log("send file function");
     const stream = this.state.file.stream();
@@ -251,7 +255,7 @@ export default class App extends Component {
       peer.write(value);
       console.log("sent a chunk");
       reader.read().then((obj) => {
-        setTimeout(handleReading(obj.done, obj.value), 100);
+        handleReading(obj.done, obj.value);
       });
     }
   }
@@ -301,8 +305,10 @@ export default class App extends Component {
                   otp={this.state.otp}
                   sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
+                  gotFile={this.state.gotFile}
                   sendFile={this.sendFile}
                   selectFile={this.selectFile}
+                  download={this.download}
                 />
               )}
             />
@@ -315,6 +321,8 @@ export default class App extends Component {
                   sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
                   gotFile={this.state.gotFile}
+                  sendFile={this.sendFile}
+                  selectFile={this.selectFile}
                   download={this.download}
                 />
               )}
