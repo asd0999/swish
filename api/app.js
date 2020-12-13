@@ -179,7 +179,10 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
-        delete clients[socket.id];
+        io.to(clients[socket.id].pair_socket_id).emit("peerDisconnected");
+        setTimeout(() => {
+            delete clients[socket.id];
+        }, 200);
         console.log(clients);
     });
 });

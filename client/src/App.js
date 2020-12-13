@@ -6,6 +6,7 @@ import Choice from "./components/firstView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
+import FileTransfer from "./components/firstView/FileTransfer";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -189,6 +190,12 @@ export default class App extends Component {
         console.log("Call received");
         this.acceptCall(data);
       });
+
+      socket.on("peerDisconnected", () => {
+        this.setState({
+          peerConnection: false,
+        });
+      });
     });
   }
 
@@ -293,33 +300,32 @@ export default class App extends Component {
         {/* <h3>Peer to peer file transfer</h3> */}
         <BrowserRouter>
           <Switch>
-            <Route exact path="/">
-              <Choice />
-            </Route>
             <Route
-              path="/send"
+              exact
+              path="/"
               render={(props) => (
-                <ShowOTP
-                  {...props}
-                  requestOTP={this.requestOTP}
-                  otp={this.state.otp}
-                  sendMessage={this.sendMessage}
-                  peerConnection={this.state.peerConnection}
-                  gotFile={this.state.gotFile}
-                  sendFile={this.sendFile}
-                  selectFile={this.selectFile}
-                  download={this.download}
-                />
+                <>
+                  <ShowOTP
+                    {...props}
+                    requestOTP={this.requestOTP}
+                    otp={this.state.otp}
+                    peerConnection={this.state.peerConnection}
+                  />
+                  <EnterOTP
+                    {...props}
+                    pairPeers={this.pairPeers}
+                    peerConnection={this.state.peerConnection}
+                  />
+                </>
               )}
             />
             <Route
-              path="/receive"
+              path="/connected"
               render={(props) => (
-                <EnterOTP
+                <FileTransfer
                   {...props}
-                  pairPeers={this.pairPeers}
-                  sendMessage={this.sendMessage}
                   peerConnection={this.state.peerConnection}
+                  sendMessage={this.sendMessage}
                   gotFile={this.state.gotFile}
                   sendFile={this.sendFile}
                   selectFile={this.selectFile}

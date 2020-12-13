@@ -5,11 +5,11 @@ export default class Choice extends Component {
   render() {
     return (
       <div>
-        <Link to="/send">
-          <button>SEND</button>
+        <Link to="/initiate-pairing">
+          <button>INITIATE PAIRING</button>
         </Link>
-        <Link to="/receive">
-          <button>RECEIVE</button>
+        <Link to="/complete-pairing">
+          <button>COMPLETE PAIRING</button>
         </Link>
       </div>
     );

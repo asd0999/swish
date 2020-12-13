@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FileTransfer from "../firstView/FileTransfer";
+import { Redirect } from "react-router-dom";
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -29,13 +29,7 @@ export default class EnterOTP extends Component {
     return (
       <div>
         {this.props.peerConnection ? (
-          <FileTransfer
-            selectFile={this.props.selectFile}
-            sendFile={this.props.sendFile}
-            download={this.props.download}
-            sendMessage={this.props.sendMessage}
-            gotFile={this.props.gotFile}
-          />
+          <Redirect to="/connected" />
         ) : (
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="otp">
