@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 
 export default class SendFile extends Component {
+  constructor(props) {
+    super(props);
+    this.clearFile = this.clearFile.bind(this);
+  }
+
+  clearFile() {
+    document.getElementById("select-file-input").value = "";
+    this.props.resetFile();
+  }
+
   render() {
     return (
       <div id="select-file-dialog">
@@ -17,7 +27,11 @@ export default class SendFile extends Component {
             <button id="ok-button" onClick={this.props.sendFile}>
               Send
             </button>
-            <button id="cancel-button" className="cancel-button">
+            <button
+              id="cancel-button"
+              className="cancel-button"
+              onClick={this.clearFile}
+            >
               Cancel
             </button>
           </div>

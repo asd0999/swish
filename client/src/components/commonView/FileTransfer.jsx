@@ -24,6 +24,7 @@ export default class FileTransfer extends Component {
             <SendFile
               selectFile={this.props.selectFile}
               sendFile={this.props.sendFile}
+              resetFile={this.props.resetFile}
             />
             {this.props.gotFile ? (
               <>

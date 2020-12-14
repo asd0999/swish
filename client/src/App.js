@@ -45,6 +45,7 @@ export default class App extends Component {
     this.initiator = this.initiator.bind(this);
     this.resetState = this.resetState.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
+    this.resetFile = this.resetFile.bind(this);
   }
 
   callPeer(id) {
@@ -238,8 +239,14 @@ export default class App extends Component {
     socket.emit("link", data); //via socket
   }
 
+  resetFile() {
+    this.setState({
+      file: null,
+    });
+  }
+
   selectFile(event) {
-    console.log("FUNCTION - select file");
+    // console.log("FUNCTION - select file");
     // fileToSend = event.target.files[0];
     this.setState({
       file: event.target.files[0], //arrayBuffer
@@ -247,33 +254,35 @@ export default class App extends Component {
   }
 
   sendFile() {
-    console.log("FUNCTION - send file");
-    const self = this;
-    const stream = this.state.file.stream();
-    const reader = stream.getReader();
+    if (this.state.file) {
+      // console.log("FUNCTION - send file");
+      const self = this;
+      const stream = this.state.file.stream();
+      const reader = stream.getReader();
 
-    reader.read().then((obj) => {
-      handleReading(obj.done, obj.value);
-    });
-
-    function handleReading(done, value) {
-      if (done) {
-        peer.send(
-          JSON.stringify({
-            done: true,
-            fileName: self.state.file.name,
-          })
-        );
-        console.log("sent EOF chunk");
-        return;
-      }
-
-      peer.send(value);
-      // console.log(value);
-      console.log("sent a chunk");
       reader.read().then((obj) => {
         handleReading(obj.done, obj.value);
       });
+
+      function handleReading(done, value) {
+        if (done) {
+          peer.send(
+            JSON.stringify({
+              done: true,
+              fileName: self.state.file.name,
+            })
+          );
+          console.log("sent EOF chunk");
+          return;
+        }
+
+        peer.send(value);
+        // console.log(value);
+        console.log("sent a chunk");
+        reader.read().then((obj) => {
+          handleReading(obj.done, obj.value);
+        });
+      }
     }
   }
 
@@ -377,6 +386,7 @@ export default class App extends Component {
                   sendFile={this.sendFile}
                   selectFile={this.selectFile}
                   download={this.download}
+                  resetFile={this.resetFile}
                 />
               )}
             />
