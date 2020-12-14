@@ -143,12 +143,12 @@ io.on("connection", function(socket) {
                 console.log("sender:", socket_id, "\nreceiver:", socket.id);
                 //receiver send pair_socket_id
                 clients[socket.id]["pair_socket_id"] = socket_id;
-                socket.emit("senderSocketId", socket_id);
+                socket.emit("pairSocketId", socket_id);
                 clients[socket.id]["otp"] += "_matched";
 
                 //sender send pair_socket_id
                 clients[socket_id]["pair_socket_id"] = socket.id;
-                io.to(socket_id).emit("receiverSocketId", socket.id);
+                io.to(socket_id).emit("pairSocketId", socket.id);
                 clients[socket_id]["otp"] += "_matched";
             }
         }

@@ -29,6 +29,7 @@ export default class App extends Component {
       socketConnection: false,
       peerConnection: false,
       otp: null,
+      initiator: false,
     };
     this.checkApi = this.checkApi.bind(this);
     // this.peerHandler = this.peerHandler.bind(this);
@@ -41,6 +42,7 @@ export default class App extends Component {
     this.download = this.download.bind(this);
     this.selectFile = this.selectFile.bind(this);
     this.sendFile = this.sendFile.bind(this);
+    this.initiator = this.initiator.bind(this);
   }
 
   callPeer(id) {
@@ -76,7 +78,7 @@ export default class App extends Component {
     });
 
     socket.on("callAccepted", (signal) => {
-      console.log("Call accepted by receiver, peer connection established");
+      console.log("Call accepted, peer connection established");
       this.setState({
         peerConnection: true,
       });
@@ -168,26 +170,29 @@ export default class App extends Component {
         console.log("otp received, waiting for receiver to pair");
       });
 
-      socket.on("senderSocketId", (senderSocketId) => {
-        console.log(
-          "Pairing complete, found sender Socket id:",
-          senderSocketId
-        );
-        this.setState({
-          peer_sid: senderSocketId,
-        });
-      });
+      // socket.on("senderSocketId", (senderSocketId) => {
+      //   console.log(
+      //     "Pairing complete, found sender Socket id:",
+      //     senderSocketId
+      //   );
+      //   this.setState({
+      //     peer_sid: senderSocketId,
+      //   });
+      // });
 
-      socket.on("receiverSocketId", (receiverSocketId) => {
+      socket.on("pairSocketId", (pairSocketId) => {
         console.log(
           "Pairing complete, found receiver Socket id:",
-          receiverSocketId
+          pairSocketId
         );
         this.setState({
-          peer_sid: receiverSocketId,
+          peer_sid: pairSocketId,
         });
 
-        this.callPeer(this.state.peer_sid);
+        if (this.state.initiator) {
+          console.log("calling receiver");
+          this.callPeer(this.state.peer_sid);
+        }
       });
 
       socket.on("calling", (data) => {
@@ -297,6 +302,12 @@ export default class App extends Component {
     });
   }
 
+  initiator(bool) {
+    this.setState({
+      initiator: bool,
+    });
+  }
+
   render() {
     return (
       <div className="container">
@@ -305,7 +316,7 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/">
               <LandingPage />
-              <Choice />
+              <Choice initiator={this.initiator} />
             </Route>
             <Route
               path="/send"
