@@ -30,20 +30,20 @@ app.use(cors(corsOptions));
 
 // routes
 // unprotected get route
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
     res.json({
         message: "API is working",
     });
 });
 
 // protected post route
-app.post("/api/posts", verifyToken, (req, res) => {
+app.post("/api/mydevices", verifyToken, (req, res) => {
     jwt.verify(req.token, "some_secret_key", (err, authData) => {
         if (err) {
             res.sendStatus(403);
         } else {
             res.json({
-                message: "Post created... ",
+                message: "My devices... ",
                 authData,
             });
         }
@@ -182,6 +182,6 @@ io.on("connection", function(socket) {
 });
 
 // listener
-httpServer.listen(PORT, () => {
+httpServer.listen(process.env.PORT || 4000, () => {
     console.log(`HTTP server listening on port ${PORT}`);
 });

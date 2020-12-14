@@ -15,9 +15,15 @@ const worker = new Worker("../worker.js");
 console.log(worker);
 // let fileToSend = null;
 
+//dev
 const socket = io("http://localhost:4000", {
   transports: ["websocket"],
 });
+
+//prod
+// const socket = io("http://198.211.97.177:4000", {
+//   transports: ["websocket"],
+// });
 
 export default class App extends Component {
   constructor() {

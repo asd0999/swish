@@ -17,7 +17,7 @@ export default class SendFile extends Component {
         <div id="dialog-content">
           <div id="select-file">
             {/* <div id="label">Select a file:</div> */}
-            <label for="select-file-input" className="custom-file-input">
+            <label htmlFor="select-file-input" className="custom-file-input">
               {this.props.file ? this.props.file.name : "Upload file"}
             </label>
             <input
