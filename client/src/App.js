@@ -6,7 +6,7 @@ import Choice from "./components/commonView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
-import FileTransfer from "./components/commonView/FileTransfer";
+import DataTransfer from "./components/commonView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
 
@@ -378,7 +378,7 @@ export default class App extends Component {
             <Route
               path="/connected"
               render={(props) => (
-                <FileTransfer
+                <DataTransfer
                   {...props}
                   peerConnection={this.state.peerConnection}
                   sendLink={this.sendLink}

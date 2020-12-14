@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Link from "./LinkTransfer";
+import Link from "./SendLink";
 import SendFile from "./SendFile";
 import { Redirect } from "react-router-dom";
 
-export default class FileTransfer extends Component {
+export default class DataTransfer extends Component {
   constructor(props) {
     super(props);
     this.state = {

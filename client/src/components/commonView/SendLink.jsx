@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Link extends Component {
+export default class SendLink extends Component {
   constructor(props) {
     super(props);
     this.state = {
