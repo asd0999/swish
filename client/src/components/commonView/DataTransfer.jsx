@@ -7,7 +7,7 @@ export default class DataTransfer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showFileInput: false,
+      showFileInput: true,
       showLinkInput: false,
     };
     this.showLinkInput = this.showLinkInput.bind(this);
@@ -18,10 +18,12 @@ export default class DataTransfer extends Component {
     if (this.state.showFileInput === false) {
       this.setState({
         showFileInput: true,
+        showLinkInput: false,
       });
     } else {
       this.setState({
         showFileInput: false,
+        showLinkInput: true,
       });
     }
   }
@@ -29,10 +31,12 @@ export default class DataTransfer extends Component {
   showLinkInput() {
     if (this.state.showLinkInput === false) {
       this.setState({
+        showFileInput: false,
         showLinkInput: true,
       });
     } else {
       this.setState({
+        showFileInput: true,
         showLinkInput: false,
       });
     }
