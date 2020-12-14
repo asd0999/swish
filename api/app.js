@@ -97,11 +97,12 @@ let clients = {};
 
 io.on("connection", function(socket) {
     console.log("Client connected:", socket.id);
+    clients[socket.id] = {};
+    console.log(clients);
 
     socket.on("clienthello", () => {
         // console.log("clienthello received");
         socket.emit("serverack", socket.id);
-        clients[socket.id] = {};
     });
 
     // both sender and receiver peers send their peer ids to server
@@ -143,12 +144,12 @@ io.on("connection", function(socket) {
                 //receiver send pair_socket_id
                 clients[socket.id]["pair_socket_id"] = socket_id;
                 socket.emit("senderSocketId", socket_id);
-                clients[socket.id]["otp"] = "matched";
+                clients[socket.id]["otp"] += "_matched";
 
                 //sender send pair_socket_id
                 clients[socket_id]["pair_socket_id"] = socket.id;
                 io.to(socket_id).emit("receiverSocketId", socket.id);
-                clients[socket_id]["otp"] = "matched";
+                clients[socket_id]["otp"] += "_matched";
             }
         }
         console.log(clients);
@@ -179,11 +180,13 @@ io.on("connection", function(socket) {
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
-        io.to(clients[socket.id].pair_socket_id).emit("peerDisconnected");
-        setTimeout(() => {
-            delete clients[socket.id];
-        }, 200);
-        console.log(clients);
+        if (clients[socket.id]) {
+            io.to(clients[socket.id].pair_socket_id).emit("peerDisconnected");
+            setTimeout(() => {
+                delete clients[socket.id];
+                console.log(clients);
+            }, 200);
+        }
     });
 });
 

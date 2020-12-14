@@ -27,7 +27,10 @@ export default class EnterOTP extends Component {
 
   render() {
     return (
-      <div>
+      <>
+        <span className="instruction">
+          Enter OTP from the other device here
+        </span>
         {this.props.peerConnection ? (
           <Redirect to="/connected" />
         ) : (
@@ -39,13 +42,13 @@ export default class EnterOTP extends Component {
                 id="otp"
                 onChange={this.handleChange}
                 value={this.state.otp}
-                placeholder="Enter OTP"
+                // placeholder="Enter OTP"
               />
             </label>
             <input type="submit" value="PAIR" />
           </form>
         )}
-      </div>
+      </>
     );
   }
 }

@@ -9,21 +9,18 @@ export default class FileTransfer extends Component {
       <>
         {this.props.peerConnection ? (
           <>
-            <span>Peer connnection established</span>
-            <p></p>
+            <h2>Connnected to other device</h2>
             <SendFile
               selectFile={this.props.selectFile}
               sendFile={this.props.sendFile}
             />
-            <p></p>
             {this.props.gotFile ? (
               <>
                 <span>You have received a file</span>
                 <button onClick={this.props.download}>Download</button>
               </>
             ) : null}
-            <p></p>
-            <span>Send an instant message</span>
+            <span>Share a link</span>
             <Message sendMessage={this.props.sendMessage} />
           </>
         ) : (

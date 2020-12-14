@@ -7,6 +7,8 @@ import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
 import FileTransfer from "./components/firstView/FileTransfer";
+import Header from "./components/firstView/Header";
+import LandingPage from "./components/firstView/LandingPage";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -86,6 +88,7 @@ export default class App extends Component {
         // console.log(string);
 
         // file part
+        // console.log(data);
         this.handleReceivingData(data);
       });
     });
@@ -127,6 +130,7 @@ export default class App extends Component {
       // console.log(string);
 
       // file part
+      // console.log(typeof data, data);
       this.handleReceivingData(data);
     });
 
@@ -239,7 +243,6 @@ export default class App extends Component {
   sendFile() {
     console.log("FUNCTION - send file");
     const self = this;
-    console.log("send file function");
     const stream = this.state.file.stream();
     const reader = stream.getReader();
 
@@ -249,17 +252,18 @@ export default class App extends Component {
 
     function handleReading(done, value) {
       if (done) {
-        peer.write(
+        peer.send(
           JSON.stringify({
             done: true,
             fileName: self.state.file.name,
           })
         );
-        console.log("sent EOF");
+        console.log("sent EOF chunk");
         return;
       }
 
-      peer.write(value);
+      peer.send(value);
+      // console.log(value);
       console.log("sent a chunk");
       reader.read().then((obj) => {
         handleReading(obj.done, obj.value);
@@ -269,7 +273,7 @@ export default class App extends Component {
 
   handleReceivingData(data) {
     if (data.toString().includes("done")) {
-      console.log("the last chunk was End Of File, ready to download");
+      console.log("received EOF chunk, ready to download");
       const parsed = JSON.parse(data);
       let fileName = parsed.fileName;
       this.setState({
@@ -295,28 +299,39 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Swish</h1>
-        {/* <h3>Peer to peer file transfer</h3> */}
+      <div className="container">
         <BrowserRouter>
+          <Header />
           <Switch>
+            <Route exact path="/">
+              <LandingPage />
+              <Choice />
+            </Route>
             <Route
-              exact
-              path="/"
+              path="/send"
               render={(props) => (
-                <>
+                <div className="pairing-div">
+                  <h2>Device pairing</h2>
                   <ShowOTP
                     {...props}
                     requestOTP={this.requestOTP}
                     otp={this.state.otp}
                     peerConnection={this.state.peerConnection}
                   />
+                </div>
+              )}
+            />
+            <Route
+              path="/receive"
+              render={(props) => (
+                <div className="pairing-div">
+                  <h2>Device pairing</h2>
                   <EnterOTP
                     {...props}
                     pairPeers={this.pairPeers}
                     peerConnection={this.state.peerConnection}
                   />
-                </>
+                </div>
               )}
             />
             <Route

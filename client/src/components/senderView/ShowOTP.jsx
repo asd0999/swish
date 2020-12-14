@@ -8,16 +8,19 @@ export default class ShowOTP extends Component {
 
   render() {
     return (
-      <div>
+      <>
+        <span className="instruction">Enter this OTP on your other device</span>
         {this.props.peerConnection ? (
           <Redirect to="/connected" />
         ) : (
           <>
-            <h1>{this.props.otp}</h1>
-            <button onClick={this.props.requestOTP}>Refresh OTP</button>
+            <h1 className="otp">{this.props.otp}</h1>
+            <button className="refresh-otp" onClick={this.props.requestOTP}>
+              Refresh OTP
+            </button>
           </>
         )}
-      </div>
+      </>
     );
   }
 }
