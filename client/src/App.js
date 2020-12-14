@@ -387,6 +387,7 @@ export default class App extends Component {
                   selectFile={this.selectFile}
                   download={this.download}
                   resetFile={this.resetFile}
+                  file={this.state.file}
                 />
               )}
             />

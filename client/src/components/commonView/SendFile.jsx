@@ -16,25 +16,30 @@ export default class SendFile extends Component {
       <div id="select-file-dialog">
         <div id="dialog-content">
           <div id="select-file">
-            <div id="label">Select a file:</div>
+            {/* <div id="label">Select a file:</div> */}
+            <label for="select-file-input" className="custom-file-input">
+              {this.props.file ? this.props.file.name : "Upload file"}
+            </label>
             <input
               type="file"
               id="select-file-input"
               onChange={this.props.selectFile}
             />
           </div>
-          <div id="dialog-footer">
-            <button id="ok-button" onClick={this.props.sendFile}>
-              Send
-            </button>
-            <button
-              id="cancel-button"
-              className="cancel-button"
-              onClick={this.clearFile}
-            >
-              Cancel
-            </button>
-          </div>
+          {this.props.file ? (
+            <div id="dialog-footer">
+              <button id="ok-button" onClick={this.props.sendFile}>
+                Send
+              </button>
+              <button
+                id="cancel-button"
+                className="cancel-button"
+                onClick={this.clearFile}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     );

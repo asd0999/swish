@@ -48,24 +48,32 @@ export default class DataTransfer extends Component {
         {this.props.peerConnection ? (
           <>
             {/* <h2>Connnected to other device</h2> */}
-            <span onClick={this.showFileInput}>Share file</span>
             {this.state.showFileInput ? (
-              <SendFile
-                selectFile={this.props.selectFile}
-                sendFile={this.props.sendFile}
-                resetFile={this.props.resetFile}
-              />
-            ) : null}
+              <>
+                <span onClick={this.showFileInput}>Share link</span>
+                <SendFile
+                  selectFile={this.props.selectFile}
+                  sendFile={this.props.sendFile}
+                  resetFile={this.props.resetFile}
+                  file={this.props.file}
+                />
+              </>
+            ) : (
+              <>
+                <span onClick={this.showFileInput}>Share file</span>
+                <SendLink sendLink={this.props.sendLink} />
+              </>
+            )}
             {this.props.gotFile ? (
               <>
                 <span>You have received a file</span>
                 <button onClick={this.props.download}>Download</button>
               </>
             ) : null}
-            <span onClick={this.showLinkInput}>Share link</span>
+            {/* <span onClick={this.showLinkInput}>Share link</span>
             {this.state.showLinkInput ? (
               <SendLink sendLink={this.props.sendLink} />
-            ) : null}
+            ) : null} */}
           </>
         ) : (
           <Redirect to="/" />
