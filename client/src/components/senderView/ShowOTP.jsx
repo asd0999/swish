@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 export default class ShowOTP extends Component {
   componentDidMount() {
     this.props.requestOTP();
+    this.props.initiator(true);
   }
 
   render() {

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
-export default class Message extends Component {
+export default class Link extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: "",
+      link: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,9 +18,9 @@ export default class Message extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.sendMessage(this.state.message);
+    this.props.sendLink(this.state.link);
     this.setState({
-      message: "",
+      link: "",
     });
   }
 
@@ -28,13 +28,13 @@ export default class Message extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="message">
+          <label htmlFor="link">
             <input
               type="text"
-              name="message"
-              id="message"
+              name="link"
+              id="link"
               onChange={this.handleChange}
-              value={this.state.message}
+              value={this.state.link}
             />
           </label>
           <input type="submit" value="SEND" />

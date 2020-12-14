@@ -105,15 +105,6 @@ io.on("connection", function(socket) {
         socket.emit("serverack", socket.id);
     });
 
-    // both sender and receiver peers send their peer ids to server
-    // socket.on("peerid", (id) => {
-    //     console.log("peerid received for socket.id", socket.id, "-->", id);
-    //     if (clients[socket.id]) {
-    //         clients[socket.id]["peer_id"] = id;
-    //     }
-    //     console.log(clients);
-    // });
-
     // sender requests an OTP for authentication/pairing with receiver
     socket.on("OTPrequest", () => {
         console.log("otp request recd");
@@ -141,14 +132,14 @@ io.on("connection", function(socket) {
             if (clients[socket_id]["otp"] == clients[socket.id]["otp"]) {
                 console.log("Found matching otp. Pairing complete:");
                 console.log("sender:", socket_id, "\nreceiver:", socket.id);
-                //receiver send pair_socket_id
-                clients[socket.id]["pair_socket_id"] = socket_id;
-                socket.emit("pairSocketId", socket_id);
+                //receiver send peer_socket_id
+                clients[socket.id]["peer_socket_id"] = socket_id;
+                socket.emit("peerSocketId", socket_id);
                 clients[socket.id]["otp"] += "_matched";
 
-                //sender send pair_socket_id
-                clients[socket_id]["pair_socket_id"] = socket.id;
-                io.to(socket_id).emit("pairSocketId", socket.id);
+                //sender send peer_socket_id
+                clients[socket_id]["peer_socket_id"] = socket.id;
+                io.to(socket_id).emit("peerSocketId", socket.id);
                 clients[socket_id]["otp"] += "_matched";
             }
         }
@@ -158,7 +149,7 @@ io.on("connection", function(socket) {
     // //received from receiver upon making data connection
     // socket.on("peerConnected", () => {
     //     //sending ack to sender that data connection has been established
-    //     io.to(clients[socket.id]["pair_socket_id"]).emit("peerConnected");
+    //     io.to(clients[socket.id]["peer_socket_id"]).emit("peerConnected");
     // });
 
     socket.on("callPeer", (data) => {
@@ -174,14 +165,14 @@ io.on("connection", function(socket) {
         io.to(data.to).emit("callAccepted", data.signal);
     });
 
-    socket.on("message", (data) => {
-        io.to(clients[socket.id].pair_socket_id).emit("message", data);
+    socket.on("link", (data) => {
+        io.to(clients[socket.id].peer_socket_id).emit("link", data);
     });
 
     socket.on("disconnect", () => {
         console.log("Client disconnected:", socket.id);
         if (clients[socket.id]) {
-            io.to(clients[socket.id].pair_socket_id).emit("peerDisconnected");
+            io.to(clients[socket.id].peer_socket_id).emit("peerDisconnected");
             setTimeout(() => {
                 delete clients[socket.id];
                 console.log(clients);

@@ -1,9 +1,20 @@
 import React, { Component } from "react";
-import Message from "../firstView/Message";
-import SendFile from "../firstView/SendFile";
+import Link from "./LinkTransfer";
+import SendFile from "./SendFile";
 import { Redirect } from "react-router-dom";
 
 export default class FileTransfer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sendFile: false,
+      sendLink: false,
+    };
+    this.showLinkInput = this.showLinkInput.bind(this);
+  }
+
+  showLinkInput() {}
+
   render() {
     return (
       <>
@@ -20,8 +31,8 @@ export default class FileTransfer extends Component {
                 <button onClick={this.props.download}>Download</button>
               </>
             ) : null}
-            <span>Share a link</span>
-            <Message sendMessage={this.props.sendMessage} />
+            <span onClick={this.showLinkInput}>Share a link</span>
+            <Link sendLink={this.props.sendLink} />
           </>
         ) : (
           <Redirect to="/" />

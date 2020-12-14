@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import Peer from "simple-peer";
 import { io } from "socket.io-client";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Choice from "./components/firstView/Choice";
+import Choice from "./components/commonView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
-import FileTransfer from "./components/firstView/FileTransfer";
-import Header from "./components/firstView/Header";
-import LandingPage from "./components/firstView/LandingPage";
+import FileTransfer from "./components/commonView/FileTransfer";
+import Header from "./components/commonView/Header";
+import LandingPage from "./components/commonView/LandingPage";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -35,7 +35,7 @@ export default class App extends Component {
     // this.peerHandler = this.peerHandler.bind(this);
     this.requestOTP = this.requestOTP.bind(this);
     this.pairPeers = this.pairPeers.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
+    this.sendLink = this.sendLink.bind(this);
     this.callPeer = this.callPeer.bind(this);
     this.acceptCall = this.acceptCall.bind(this);
     this.handleReceivingData = this.handleReceivingData.bind(this);
@@ -43,6 +43,8 @@ export default class App extends Component {
     this.selectFile = this.selectFile.bind(this);
     this.sendFile = this.sendFile.bind(this);
     this.initiator = this.initiator.bind(this);
+    this.resetState = this.resetState.bind(this);
+    this.refreshPage = this.refreshPage.bind(this);
   }
 
   callPeer(id) {
@@ -93,6 +95,10 @@ export default class App extends Component {
         // console.log(data);
         this.handleReceivingData(data);
       });
+
+      peer.on("close", () => {
+        console.log("peer connection closed");
+      });
     });
   }
 
@@ -136,6 +142,10 @@ export default class App extends Component {
       this.handleReceivingData(data);
     });
 
+    peer.on("close", () => {
+      console.log("peer connection closed");
+    });
+
     peer.signal(callerData.signal);
     this.setState({
       peerConnection: true,
@@ -159,7 +169,7 @@ export default class App extends Component {
         });
       });
 
-      socket.on("message", (data) => {
+      socket.on("link", (data) => {
         console.log(data);
       });
 
@@ -170,23 +180,13 @@ export default class App extends Component {
         console.log("otp received, waiting for receiver to pair");
       });
 
-      // socket.on("senderSocketId", (senderSocketId) => {
-      //   console.log(
-      //     "Pairing complete, found sender Socket id:",
-      //     senderSocketId
-      //   );
-      //   this.setState({
-      //     peer_sid: senderSocketId,
-      //   });
-      // });
-
-      socket.on("pairSocketId", (pairSocketId) => {
+      socket.on("peerSocketId", (peerSocketId) => {
         console.log(
           "Pairing complete, found receiver Socket id:",
-          pairSocketId
+          peerSocketId
         );
         this.setState({
-          peer_sid: pairSocketId,
+          peer_sid: peerSocketId,
         });
 
         if (this.state.initiator) {
@@ -201,9 +201,10 @@ export default class App extends Component {
       });
 
       socket.on("peerDisconnected", () => {
-        this.setState({
-          peerConnection: false,
-        });
+        console.log("Oops, peer disconnected");
+        if (this.state.peerConnection) {
+          this.resetState();
+        }
       });
     });
   }
@@ -232,9 +233,9 @@ export default class App extends Component {
     });
   }
 
-  sendMessage(data) {
+  sendLink(data) {
     // peer.send(data); //via peer
-    socket.emit("message", data); //via socket
+    socket.emit("link", data); //via socket
   }
 
   selectFile(event) {
@@ -303,9 +304,25 @@ export default class App extends Component {
   }
 
   initiator(bool) {
+    console.log("setting intiator = true");
     this.setState({
       initiator: bool,
     });
+  }
+
+  resetState() {
+    console.log("resetting state and destroying peer connection");
+    this.setState({
+      peerConnection: false,
+      otp: null,
+      peer_sid: null,
+    });
+    peer = null;
+    socket.emit("peerDisconnected");
+  }
+
+  refreshPage() {
+    window.location.reload();
   }
 
   render() {
@@ -316,7 +333,10 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/">
               <LandingPage />
-              <Choice initiator={this.initiator} />
+              <Choice
+                peerConnection={this.state.peerConnection}
+                refreshPage={this.refreshPage}
+              />
             </Route>
             <Route
               path="/send"
@@ -328,6 +348,7 @@ export default class App extends Component {
                     requestOTP={this.requestOTP}
                     otp={this.state.otp}
                     peerConnection={this.state.peerConnection}
+                    initiator={this.initiator}
                   />
                 </div>
               )}
@@ -351,7 +372,7 @@ export default class App extends Component {
                 <FileTransfer
                   {...props}
                   peerConnection={this.state.peerConnection}
-                  sendMessage={this.sendMessage}
+                  sendLink={this.sendLink}
                   gotFile={this.state.gotFile}
                   sendFile={this.sendFile}
                   selectFile={this.selectFile}
