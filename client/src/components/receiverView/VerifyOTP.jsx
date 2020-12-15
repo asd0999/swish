@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 
-export default class Connecting extends Component {
+export default class VerifyOTP extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +19,7 @@ export default class Connecting extends Component {
     loader.classList.add("active");
 
     loader.addEventListener("animationend", function () {
-      self.props.peerConnection ? (
+      self.props.OTPaccepted ? (
         <>
           {check.classList.add("active")}
           {setTimeout(() => {
@@ -41,18 +40,12 @@ export default class Connecting extends Component {
   render() {
     return (
       <div>
-        {this.state.done ? (
-          <Redirect to="/connected" />
-        ) : (
-          <>
-            <div className="loader">
-              <div className="check">
-                <span className="check-one"></span>
-                <span className="check-two"></span>
-              </div>
-            </div>
-          </>
-        )}
+        <div className="loader">
+          <div className="check">
+            <span className="check-one"></span>
+            <span className="check-two"></span>
+          </div>
+        </div>
       </div>
     );
   }

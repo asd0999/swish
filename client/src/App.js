@@ -38,6 +38,7 @@ export default class App extends Component {
       otp: null,
       initiator: false,
       wrongOTP: false,
+      OTPaccepted: false,
     };
     this.checkApi = this.checkApi.bind(this);
     // this.peerHandler = this.peerHandler.bind(this);
@@ -197,6 +198,7 @@ export default class App extends Component {
         );
         this.setState({
           peer_sid: peerSocketId,
+          OTPaccepted: true,
         });
 
         if (this.state.initiator) {
@@ -392,6 +394,7 @@ export default class App extends Component {
                     peerConnection={this.state.peerConnection}
                     wrongOTP={this.state.wrongOTP}
                     resetWrongOTP={this.resetWrongOTP}
+                    OTPaccepted={this.state.OTPaccepted}
                   />
                 </div>
               )}

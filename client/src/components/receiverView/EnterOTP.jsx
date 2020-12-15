@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
+import VerifyOTP from "./VerifyOTP";
 // import PageHeading from "../commonView/PageHeading";
 // import { Spring } from "react-spring/renderprops";
 
@@ -58,57 +59,67 @@ export default class EnterOTP extends Component {
   render() {
     return (
       <>
-        <h2>Device pairing</h2>
-        {this.props.wrongOTP ? (
+        {this.props.peerConnection ? (
           <>
-            {self.state.wrongOnce ? (
-              <span className="instruction">
-                Incorrect OTP, could not pair devices
-              </span>
-            ) : (
-              <span className="instruction">
-                Enter OTP from the other device here
-              </span>
-            )}
-            <form onSubmit={this.handleSubmit}>
-              <label className="label-OTP-input" htmlFor="otp">
-                <input
-                  type="text"
-                  name="otp"
-                  id="otp"
-                  onClick={this.handleClick}
-                  onChange={this.handleChange}
-                  value={this.state.otp}
-                  placeholder="Enter OTP"
-                />
-              </label>
-              <input id="pairBtn" type="submit" value="PAIR" />
-            </form>
-          </>
-        ) : this.state.verifyingOTP ? (
-          <>
-            <span className="instruction">Verifying OTP</span>
+            <h2> OTP verified</h2>
+            <span className="instruction"> Setting up P2P connection</span>
             <Connecting peerConnection={this.props.peerConnection} />
           </>
         ) : (
           <>
-            <span className="instruction">
-              Enter OTP from the other device here
-            </span>
-            <form onSubmit={this.handleSubmit}>
-              <label className="label-OTP-input" htmlFor="otp">
-                <input
-                  type="text"
-                  name="otp"
-                  id="otp"
-                  onClick={this.handleClick}
-                  onChange={this.handleChange}
-                  value={this.state.otp}
-                  placeholder="Enter OTP"
-                />
-              </label>
-              <input id="pairBtn" type="submit" value="PAIR" />
-            </form>
+            <h2>Device pairing</h2>
+            {this.props.wrongOTP ? (
+              <>
+                {this.state.wrongOnce ? (
+                  <span className="instruction">
+                    Incorrect OTP, could not pair devices
+                  </span>
+                ) : (
+                  <span className="instruction">
+                    Enter OTP from the other device here
+                  </span>
+                )}
+                <form onSubmit={this.handleSubmit}>
+                  <label className="label-OTP-input" htmlFor="otp">
+                    <input
+                      type="text"
+                      name="otp"
+                      id="otp"
+                      onClick={this.handleClick}
+                      onChange={this.handleChange}
+                      value={this.state.otp}
+                      placeholder="Enter OTP"
+                    />
+                  </label>
+                  <input id="pairBtn" type="submit" value="PAIR" />
+                </form>
+              </>
+            ) : this.state.verifyingOTP ? (
+              <>
+                <span className="instruction">Verifying OTP</span>
+                <VerifyOTP OTPaccepted={this.props.OTPaccepted} />
+              </>
+            ) : (
+              <>
+                <span className="instruction">
+                  Enter OTP from the other device here
+                </span>
+                <form onSubmit={this.handleSubmit}>
+                  <label className="label-OTP-input" htmlFor="otp">
+                    <input
+                      type="text"
+                      name="otp"
+                      id="otp"
+                      onClick={this.handleClick}
+                      onChange={this.handleChange}
+                      value={this.state.otp}
+                      placeholder="Enter OTP"
+                    />
+                  </label>
+                  <input id="pairBtn" type="submit" value="PAIR" />
+                </form>
+              </>
+            )}
           </>
         )}
       </>
