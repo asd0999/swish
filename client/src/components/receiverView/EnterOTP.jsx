@@ -28,7 +28,6 @@ export default class EnterOTP extends Component {
     e.target.placeholder = "";
     this.setState({
       verifyingOTP: false,
-      wrongOnce: true,
     });
     this.props.resetWrongOTP();
   }
@@ -46,6 +45,7 @@ export default class EnterOTP extends Component {
       this.setState({
         otp: "",
         verifyingOTP: true,
+        wrongOnce: true,
       });
     }
   }
@@ -79,7 +79,7 @@ export default class EnterOTP extends Component {
                       placeholder="Enter OTP"
                     />
                   </label>
-                  <input id="pairBtn" type="submit" value="PAIR" />
+                  <input id="pairBtn" type="submit" value="TRY AGAIN" />
                 </form>
               </>
             ) : this.state.verifyingOTP ? (
@@ -110,7 +110,11 @@ export default class EnterOTP extends Component {
                       placeholder="Enter OTP"
                     />
                   </label>
-                  <input id="pairBtn" type="submit" value="PAIR" />
+                  {this.state.wrongOnce ? (
+                    <input id="pairBtn" type="submit" value="TRY AGAIN" />
+                  ) : (
+                    <input id="pairBtn" type="submit" value="PAIR" />
+                  )}
                 </form>
               </>
             )}
