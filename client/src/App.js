@@ -9,7 +9,7 @@ import streamSaver from "streamsaver";
 import DataTransfer from "./components/commonView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
-import Connecting from "./components/commonView/Connecting";
+// import Connecting from "./components/commonView/Connecting";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -391,7 +391,7 @@ export default class App extends Component {
                 </div>
               )}
             />
-            <Route exact path="/connecting" component={Connecting} />
+            {/* <Route exact path="/connecting" component={Connecting} /> */}
             <Route
               path="/connected"
               render={(props) => (

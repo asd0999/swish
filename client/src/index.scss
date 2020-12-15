@@ -81,25 +81,22 @@ input[type="text"] {
     text-align: center;
     color: grey;
     position: absolute;
-    top: 230px;
+    top: 232px;
 }
 
 #otp:focus {
-    text-align: center;
     font-size: 2em;
     /* margin-block-start: 0.67em; */
     /* margin-block-end: 0.67em; */
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
-    color: grey;
-    position: absolute;
-    top: 230px;
 }
 
 .otp {
     position: absolute;
     top: 236px;
+    margin: 0 0 0 8px;
 }
 
 .label-OTP-input {
@@ -166,7 +163,7 @@ input[type="file"] {
 
 #pairBtn {
     position: absolute;
-    top: 279px;
+    top: 280px;
 }
 
 .refresh-otp {

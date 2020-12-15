@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-// import UserVisual from "../commonView/UserVisual";
+// import { Redirect } from "react-router-dom";
+import Connecting from "../commonView/Connecting";
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -36,27 +36,38 @@ export default class EnterOTP extends Component {
   render() {
     return (
       <>
-        <span className="instruction">
-          Enter OTP from the other device here
-        </span>
         {this.props.peerConnection ? (
-          <Redirect to="/connecting" />
+          // <Redirect to="/connecting" />
+          <>
+            <span className="instruction">
+              OTP verified, setting up connection
+            </span>
+            <Connecting />
+          </>
         ) : (
-          <form onSubmit={this.handleSubmit}>
-            <label className="label-OTP-input" htmlFor="otp">
-              <input
-                type="text"
-                name="otp"
-                id="otp"
-                onClick={this.handleClick}
-                onChange={this.handleChange}
-                value={this.state.otp}
-                placeholder="Enter OTP"
-              />
-            </label>
-            {/* <UserVisual /> */}
-            <input id="pairBtn" type="submit" value="PAIR" />
-          </form>
+          <>
+            <span className="instruction">
+              Enter OTP from the other device here
+            </span>
+            <form onSubmit={this.handleSubmit}>
+              <label className="label-OTP-input" htmlFor="otp">
+                <input
+                  type="text"
+                  name="otp"
+                  id="otp"
+                  onClick={this.handleClick}
+                  onChange={this.handleChange}
+                  value={this.state.otp}
+                  placeholder="Enter OTP"
+                />
+              </label>
+              {this.props.wrongOTP ? (
+                <input id="pairBtn" type="submit" value="TRY AGAIN" />
+              ) : (
+                <input id="pairBtn" type="submit" value="PAIR" />
+              )}
+            </form>
+          </>
         )}
       </>
     );
