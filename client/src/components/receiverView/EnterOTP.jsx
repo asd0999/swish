@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 // import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
-import PageHeading from "../commonView/PageHeading";
-import { Spring } from "react-spring/renderprops";
+// import PageHeading from "../commonView/PageHeading";
+// import { Spring } from "react-spring/renderprops";
 
 export default class EnterOTP extends Component {
   constructor(props) {
     super(props);
     this.state = {
       otp: "",
+      verifyingOTP: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,24 +43,31 @@ export default class EnterOTP extends Component {
     this.props.pairPeers(this.state.otp);
     this.setState({
       otp: "",
+      verifyingOTP: true,
     });
   }
 
   render() {
     return (
       <>
-        <PageHeading peerConnection={this.props.peerConnection} />
         {this.props.peerConnection ? (
-          // <Redirect to="/connecting" />
           <>
-            <span className="instruction">Setting up P2P connection</span>
+            <h2> OTP verified</h2>
+            <span className="instruction"> Setting up P2P connection</span>
             <Connecting />
           </>
         ) : (
           <>
-            <span className="instruction">
-              Enter OTP from the other device here
-            </span>
+            <h2>Device pairing</h2>
+            {this.props.wrongOTP ? (
+              <span className="instruction">
+                Could not pair devices, enter OTP again
+              </span>
+            ) : (
+              <span className="instruction">
+                Enter OTP from the other device here
+              </span>
+            )}
             <form onSubmit={this.handleSubmit}>
               <label className="label-OTP-input" htmlFor="otp">
                 <input
@@ -72,21 +80,7 @@ export default class EnterOTP extends Component {
                   placeholder="Enter OTP"
                 />
               </label>
-              {this.props.wrongOTP ? (
-                <Spring
-                  from={{ opacity: 0 }}
-                  to={{ opacity: 1 }}
-                  config={{ duration: 200 }}
-                >
-                  {(props) => (
-                    <div className="extra-div" style={props}>
-                      <input id="pairBtn" type="submit" value="TRY AGAIN" />
-                    </div>
-                  )}
-                </Spring>
-              ) : (
-                <input id="pairBtn" type="submit" value="PAIR" />
-              )}
+              <input id="pairBtn" type="submit" value="PAIR" />
             </form>
           </>
         )}
