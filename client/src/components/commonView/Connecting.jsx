@@ -26,7 +26,7 @@ export default class Connecting extends Component {
 
     loader.addEventListener("animationend", function () {
       check.classList.add("active");
-      console.log("ho gaya");
+      // console.log("ho gaya");
       setTimeout(() => {
         self.setState({
           done: true,

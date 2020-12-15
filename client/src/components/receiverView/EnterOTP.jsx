@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
 import PageHeading from "../commonView/PageHeading";
+import { Spring } from "react-spring/renderprops";
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -72,7 +73,17 @@ export default class EnterOTP extends Component {
                 />
               </label>
               {this.props.wrongOTP ? (
-                <input id="pairBtn" type="submit" value="TRY AGAIN" />
+                <Spring
+                  from={{ opacity: 0 }}
+                  to={{ opacity: 1 }}
+                  config={{ duration: 200 }}
+                >
+                  {(props) => (
+                    <div className="extra-div" style={props}>
+                      <input id="pairBtn" type="submit" value="TRY AGAIN" />
+                    </div>
+                  )}
+                </Spring>
               ) : (
                 <input id="pairBtn" type="submit" value="PAIR" />
               )}
