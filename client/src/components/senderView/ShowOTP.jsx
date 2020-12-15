@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
+import PageHeading from "../commonView/PageHeading";
 
 export default class ShowOTP extends Component {
   componentDidMount() {
@@ -11,12 +12,11 @@ export default class ShowOTP extends Component {
   render() {
     return (
       <>
+        <PageHeading peerConnection={this.props.peerConnection} />
         {this.props.peerConnection ? (
           // <Redirect to="/connecting" />
           <>
-            <span className="instruction">
-              OTP verified, setting up connection
-            </span>
+            <span className="instruction">Setting up P2P connection</span>
             <Connecting />
           </>
         ) : (

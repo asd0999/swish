@@ -366,7 +366,6 @@ export default class App extends Component {
               path="/send"
               render={(props) => (
                 <div className="pairing-div">
-                  <h2>Device pairing</h2>
                   <ShowOTP
                     {...props}
                     requestOTP={this.requestOTP}
@@ -381,7 +380,6 @@ export default class App extends Component {
               path="/receive"
               render={(props) => (
                 <div className="pairing-div">
-                  <h2>Device pairing</h2>
                   <EnterOTP
                     {...props}
                     pairPeers={this.pairPeers}
