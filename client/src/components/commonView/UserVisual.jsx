@@ -27,10 +27,11 @@ export default class UserVisual extends Component {
     loader.addEventListener("animationend", function () {
       check.classList.add("active");
       console.log("ho gaya");
-      self.setState({
-        done: true,
-      });
-      //   <Redirect to="/connected" />;
+      setTimeout(() => {
+        self.setState({
+          done: true,
+        });
+      }, 1000);
     });
   }
 

@@ -12,7 +12,7 @@ export default class ShowOTP extends Component {
       <>
         <span className="instruction">Enter this OTP on your other device</span>
         {this.props.peerConnection ? (
-          <Redirect to="/connected" />
+          <Redirect to="/connecting" />
         ) : (
           <>
             <h1 className="otp">{this.props.otp}</h1>
