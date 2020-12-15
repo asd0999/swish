@@ -2,19 +2,16 @@ import React, { Component } from "react";
 import Peer from "simple-peer";
 import { io } from "socket.io-client";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Choice from "./components/commonView/Choice";
 import ShowOTP from "./components/senderView/ShowOTP";
 import EnterOTP from "./components/receiverView/EnterOTP";
 import streamSaver from "streamsaver";
 import DataTransfer from "./components/commonView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
-// import Connecting from "./components/commonView/Connecting";
 
 let peer = null;
 const worker = new Worker("../worker.js");
 console.log(worker);
-// let fileToSend = null;
 
 //dev
 const socket = io("http://localhost:4000", {
@@ -30,7 +27,6 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      // my_peerid: null,
       my_sid: null,
       peer_sid: null,
       socketConnection: false,
@@ -41,7 +37,6 @@ export default class App extends Component {
       OTPaccepted: false,
     };
     this.checkApi = this.checkApi.bind(this);
-    // this.peerHandler = this.peerHandler.bind(this);
     this.requestOTP = this.requestOTP.bind(this);
     this.pairPeers = this.pairPeers.bind(this);
     this.sendLink = this.sendLink.bind(this);
@@ -62,7 +57,6 @@ export default class App extends Component {
     peer = new Peer({
       initiator: true,
       trickle: false,
-      // stream: stream,
       config: {
         iceServers: [
           {
@@ -269,8 +263,6 @@ export default class App extends Component {
   }
 
   selectFile(event) {
-    // console.log("FUNCTION - select file");
-    // fileToSend = event.target.files[0];
     this.setState({
       file: event.target.files[0], //arrayBuffer
     });
@@ -278,7 +270,6 @@ export default class App extends Component {
 
   sendFile() {
     if (this.state.file) {
-      // console.log("FUNCTION - send file");
       const self = this;
       const stream = this.state.file.stream();
       const reader = stream.getReader();
@@ -399,7 +390,6 @@ export default class App extends Component {
                 </div>
               )}
             />
-            {/* <Route exact path="/connecting" component={Connecting} /> */}
             <Route
               path="/connected"
               render={(props) => (

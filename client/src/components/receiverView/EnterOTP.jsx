@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-// import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
 import VerifyOTP from "./VerifyOTP";
-// import PageHeading from "../commonView/PageHeading";
-// import { Spring } from "react-spring/renderprops";
-
-let self;
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -15,7 +10,6 @@ export default class EnterOTP extends Component {
       verifyingOTP: false,
       wrongOnce: false,
     };
-    self = this;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -31,8 +25,6 @@ export default class EnterOTP extends Component {
   }
 
   handleClick(e) {
-    // console.log("clicked");
-    // console.log(e.target.value);
     e.target.placeholder = "";
     this.setState({
       verifyingOTP: false,
