@@ -9,7 +9,7 @@ import streamSaver from "streamsaver";
 import DataTransfer from "./components/commonView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
-import UserVisual from "./components/commonView/UserVisual";
+import Connecting from "./components/commonView/Connecting";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -37,6 +37,7 @@ export default class App extends Component {
       peerConnection: false,
       otp: null,
       initiator: false,
+      wrongOTP: false,
     };
     this.checkApi = this.checkApi.bind(this);
     // this.peerHandler = this.peerHandler.bind(this);
@@ -206,6 +207,12 @@ export default class App extends Component {
       socket.on("calling", (data) => {
         console.log("Call received");
         this.acceptCall(data);
+      });
+
+      socket.on("wrongOTP", () => {
+        this.setState({
+          wrongOTP: true,
+        });
       });
 
       socket.on("peerDisconnected", () => {
@@ -379,11 +386,12 @@ export default class App extends Component {
                     {...props}
                     pairPeers={this.pairPeers}
                     peerConnection={this.state.peerConnection}
+                    wrongOTP={this.state.wrongOTP}
                   />
                 </div>
               )}
             />
-            <Route exact path="/connecting" component={UserVisual} />
+            <Route exact path="/connecting" component={Connecting} />
             <Route
               path="/connected"
               render={(props) => (

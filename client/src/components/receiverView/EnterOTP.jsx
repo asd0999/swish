@@ -10,6 +10,13 @@ export default class EnterOTP extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e) {
+    // console.log("clicked");
+    // console.log(e.target.value);
+    e.target.placeholder = "";
   }
 
   handleChange(e) {
@@ -41,9 +48,10 @@ export default class EnterOTP extends Component {
                 type="text"
                 name="otp"
                 id="otp"
+                onClick={this.handleClick}
                 onChange={this.handleChange}
                 value={this.state.otp}
-                // placeholder="Enter OTP"
+                placeholder="Enter OTP"
               />
             </label>
             {/* <UserVisual /> */}
