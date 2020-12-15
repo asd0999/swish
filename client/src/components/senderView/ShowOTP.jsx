@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-// import { Redirect } from "react-router-dom";
 import Connecting from "../commonView/Connecting";
-// import PageHeading from "../commonView/PageHeading";
 import { Spring } from "react-spring/renderprops";
 
 export default class ShowOTP extends Component {
