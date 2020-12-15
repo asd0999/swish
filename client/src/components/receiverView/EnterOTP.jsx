@@ -4,7 +4,7 @@ import Connecting from "../commonView/Connecting";
 // import PageHeading from "../commonView/PageHeading";
 // import { Spring } from "react-spring/renderprops";
 
-// let self;
+let self;
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -12,8 +12,9 @@ export default class EnterOTP extends Component {
     this.state = {
       otp: "",
       verifyingOTP: false,
+      wrongOnce: false,
     };
-    // self = this;
+    self = this;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -34,6 +35,7 @@ export default class EnterOTP extends Component {
     e.target.placeholder = "";
     this.setState({
       verifyingOTP: false,
+      wrongOnce: true,
     });
     this.props.resetWrongOTP();
   }
@@ -59,9 +61,15 @@ export default class EnterOTP extends Component {
         <h2>Device pairing</h2>
         {this.props.wrongOTP ? (
           <>
-            <span className="instruction">
-              Incorrect OTP, could not pair devices
-            </span>
+            {self.state.wrongOnce ? (
+              <span className="instruction">
+                Incorrect OTP, could not pair devices
+              </span>
+            ) : (
+              <span className="instruction">
+                Enter OTP from the other device here
+              </span>
+            )}
             <form onSubmit={this.handleSubmit}>
               <label className="label-OTP-input" htmlFor="otp">
                 <input
@@ -74,7 +82,7 @@ export default class EnterOTP extends Component {
                   placeholder="Enter OTP"
                 />
               </label>
-              <input id="pairBtn" type="submit" value="TRY AGAIN" />
+              <input id="pairBtn" type="submit" value="PAIR" />
             </form>
           </>
         ) : this.state.verifyingOTP ? (
