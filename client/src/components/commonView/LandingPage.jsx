@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Spring } from "react-spring/renderprops";
+import Choice from "./Choice";
 
 export default class LandingPage extends Component {
   render() {
@@ -17,6 +18,17 @@ export default class LandingPage extends Component {
                 <br />
                 quick . easy . secure
               </h3>
+            </div>
+          )}
+        </Spring>
+        <Spring
+          from={{ opacity: 0 }}
+          to={{ opacity: 1 }}
+          config={{ delay: 2200 }}
+        >
+          {(props) => (
+            <div style={props}>
+              <Choice />
             </div>
           )}
         </Spring>

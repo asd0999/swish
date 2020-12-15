@@ -356,8 +356,7 @@ export default class App extends Component {
           <Header />
           <Switch>
             <Route exact path="/">
-              <LandingPage />
-              <Choice
+              <LandingPage
                 peerConnection={this.state.peerConnection}
                 refreshPage={this.refreshPage}
               />
