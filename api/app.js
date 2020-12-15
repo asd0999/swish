@@ -148,7 +148,9 @@ io.on("connection", function(socket) {
             }
         }
         if (!foundPeer) {
-            socket.emit("wrongOTP");
+            setTimeout(() => {
+                socket.emit("wrongOTP");
+            }, 1000);
             console.log("wrong OTP");
         }
         console.log(clients);

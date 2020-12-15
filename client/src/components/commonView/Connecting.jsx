@@ -16,17 +16,12 @@ export default class Connecting extends Component {
 
   animate(self) {
     console.log("strat");
-    // const btn = document.querySelector(".user-visual");
     const loader = document.querySelector(".loader");
     const check = document.querySelector(".check");
-
-    // btn.addEventListener("click", function () {
     loader.classList.add("active");
-    // });
 
     loader.addEventListener("animationend", function () {
       check.classList.add("active");
-      // console.log("ho gaya");
       setTimeout(() => {
         self.setState({
           done: true,
@@ -38,18 +33,18 @@ export default class Connecting extends Component {
   render() {
     return (
       <div>
-        {this.state.done ? (
-          <Redirect to="/connected" />
-        ) : (
-          <>
-            <div className="loader">
+        <div className="loader">
+          {this.state.done ? (
+            <Redirect to="/connected" />
+          ) : (
+            <>
               <div className="check">
                 <span className="check-one"></span>
                 <span className="check-two"></span>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     );
   }
