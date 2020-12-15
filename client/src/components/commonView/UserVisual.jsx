@@ -37,7 +37,7 @@ export default class UserVisual extends Component {
 
   render() {
     return (
-      <div className="blackness">
+      <div>
         {this.state.done ? (
           <Redirect to="/connected" />
         ) : (

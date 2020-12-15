@@ -36,7 +36,7 @@ export default class EnterOTP extends Component {
           <Redirect to="/connecting" />
         ) : (
           <form onSubmit={this.handleSubmit}>
-            <label htmlFor="otp">
+            <label className="label-OTP-input" htmlFor="otp">
               <input
                 type="text"
                 name="otp"
@@ -47,7 +47,7 @@ export default class EnterOTP extends Component {
               />
             </label>
             {/* <UserVisual /> */}
-            <input type="submit" value="PAIR" />
+            <input id="pairBtn" type="submit" value="PAIR" />
           </form>
         )}
       </>
