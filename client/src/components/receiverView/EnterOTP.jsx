@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+// import UserVisual from "../commonView/UserVisual";
 
 export default class EnterOTP extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export default class EnterOTP extends Component {
           Enter OTP from the other device here
         </span>
         {this.props.peerConnection ? (
-          <Redirect to="/connected" />
+          <Redirect to="/connecting" />
         ) : (
           <form onSubmit={this.handleSubmit}>
             <label htmlFor="otp">
@@ -45,6 +46,7 @@ export default class EnterOTP extends Component {
                 // placeholder="Enter OTP"
               />
             </label>
+            {/* <UserVisual /> */}
             <input type="submit" value="PAIR" />
           </form>
         )}

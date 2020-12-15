@@ -9,6 +9,7 @@ import streamSaver from "streamsaver";
 import DataTransfer from "./components/commonView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
+import UserVisual from "./components/commonView/UserVisual";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -21,7 +22,7 @@ const socket = io("http://localhost:4000", {
 });
 
 //prod
-// const socket = io("http://198.211.97.177:4000", {
+// const socket = io("https://swish-server-api.herokuapp.com/", {
 //   transports: ["websocket"],
 // });
 
@@ -282,7 +283,7 @@ export default class App extends Component {
           return;
         }
 
-        peer.send(value);
+        peer.write(value);
         // console.log(value);
         console.log("sent a chunk");
         reader.read().then((obj) => {
@@ -331,6 +332,7 @@ export default class App extends Component {
       peerConnection: false,
       otp: null,
       peer_sid: null,
+      file: null,
     });
     peer = null;
     socket.emit("peerDisconnected");
@@ -381,20 +383,23 @@ export default class App extends Component {
                 </div>
               )}
             />
+            <Route exact path="/connecting" component={UserVisual} />
             <Route
               path="/connected"
               render={(props) => (
-                <DataTransfer
-                  {...props}
-                  peerConnection={this.state.peerConnection}
-                  sendLink={this.sendLink}
-                  gotFile={this.state.gotFile}
-                  sendFile={this.sendFile}
-                  selectFile={this.selectFile}
-                  download={this.download}
-                  resetFile={this.resetFile}
-                  file={this.state.file}
-                />
+                <>
+                  <DataTransfer
+                    {...props}
+                    peerConnection={this.state.peerConnection}
+                    sendLink={this.sendLink}
+                    gotFile={this.state.gotFile}
+                    sendFile={this.sendFile}
+                    selectFile={this.selectFile}
+                    download={this.download}
+                    resetFile={this.resetFile}
+                    file={this.state.file}
+                  />
+                </>
               )}
             />
           </Switch>
