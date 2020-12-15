@@ -41,11 +41,13 @@ export default class EnterOTP extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.pairPeers(this.state.otp);
-    this.setState({
-      otp: "",
-      verifyingOTP: true,
-    });
+    if (this.state.otp) {
+      this.props.pairPeers(this.state.otp);
+      this.setState({
+        otp: "",
+        verifyingOTP: true,
+      });
+    }
   }
 
   render() {
@@ -62,15 +64,9 @@ export default class EnterOTP extends Component {
             <h2>Device pairing</h2>
             {this.props.wrongOTP ? (
               <>
-                {this.state.wrongOnce ? (
-                  <span className="instruction">
-                    Incorrect OTP, could not pair devices
-                  </span>
-                ) : (
-                  <span className="instruction">
-                    Enter OTP from the other device here
-                  </span>
-                )}
+                <span className="instruction">
+                  Incorrect OTP, could not pair devices
+                </span>
                 <form onSubmit={this.handleSubmit}>
                   <label className="label-OTP-input" htmlFor="otp">
                     <input
@@ -93,9 +89,15 @@ export default class EnterOTP extends Component {
               </>
             ) : (
               <>
-                <span className="instruction">
-                  Enter OTP from the other device here
-                </span>
+                {this.state.wrongOnce ? (
+                  <span className="instruction">
+                    Incorrect OTP, could not pair devices
+                  </span>
+                ) : (
+                  <span className="instruction">
+                    Enter OTP from the other device here
+                  </span>
+                )}
                 <form onSubmit={this.handleSubmit}>
                   <label className="label-OTP-input" htmlFor="otp">
                     <input
