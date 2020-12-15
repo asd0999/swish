@@ -12,7 +12,6 @@ export default class EnterOTP extends Component {
     this.state = {
       otp: "",
       verifyingOTP: false,
-      wrongOTP: false,
     };
     // self = this;
     this.handleChange = this.handleChange.bind(this);
@@ -25,7 +24,6 @@ export default class EnterOTP extends Component {
     if (this.props.wrongOTP) {
       this.setState({
         verifyingOTP: false,
-        wrongOTP: true,
       });
     }
   }
@@ -36,8 +34,8 @@ export default class EnterOTP extends Component {
     e.target.placeholder = "";
     this.setState({
       verifyingOTP: false,
-      wrongOTP: false,
     });
+    this.props.resetWrongOTP();
   }
 
   handleChange(e) {
@@ -52,7 +50,6 @@ export default class EnterOTP extends Component {
     this.setState({
       otp: "",
       verifyingOTP: true,
-      wrongOTP: false,
     });
   }
 
@@ -83,7 +80,7 @@ export default class EnterOTP extends Component {
         ) : this.state.verifyingOTP ? (
           <>
             <span className="instruction">Verifying OTP</span>
-            <Connecting />
+            <Connecting peerConnection={this.props.peerConnection} />
           </>
         ) : (
           <>

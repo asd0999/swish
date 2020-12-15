@@ -15,36 +15,42 @@ export default class Connecting extends Component {
   }
 
   animate(self) {
-    console.log("strat");
     const loader = document.querySelector(".loader");
     const check = document.querySelector(".check");
     loader.classList.add("active");
 
     loader.addEventListener("animationend", function () {
-      check.classList.add("active");
-      setTimeout(() => {
-        self.setState({
-          done: true,
-        });
-      }, 1000);
+      self.props.peerConnection ? (
+        <>
+          {check.classList.remove("active")}
+          {check.classList.add("active")}
+          {setTimeout(() => {
+            self.setState({
+              done: true,
+            });
+          }, 1000)}
+        </>
+      ) : (
+        loader.classList.add("active")
+      );
     });
   }
 
   render() {
     return (
       <div>
-        <div className="loader">
-          {this.state.done ? (
-            <Redirect to="/connected" />
-          ) : (
-            <>
+        {this.state.done ? (
+          <Redirect to="/connected" />
+        ) : (
+          <>
+            <div className="loader">
               <div className="check">
                 <span className="check-one"></span>
                 <span className="check-two"></span>
               </div>
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }

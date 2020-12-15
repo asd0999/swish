@@ -54,6 +54,7 @@ export default class App extends Component {
     this.resetState = this.resetState.bind(this);
     this.refreshPage = this.refreshPage.bind(this);
     this.resetFile = this.resetFile.bind(this);
+    this.resetWrongOTP = this.resetWrongOTP.bind(this);
   }
 
   callPeer(id) {
@@ -240,6 +241,12 @@ export default class App extends Component {
     socket.emit("OTPrequest");
   }
 
+  resetWrongOTP() {
+    this.setState({
+      wrongOTP: false,
+    });
+  }
+
   pairPeers(otp) {
     console.log("attempting to pair peers");
     socket.emit("pairingRequest", otp);
@@ -384,6 +391,7 @@ export default class App extends Component {
                     pairPeers={this.pairPeers}
                     peerConnection={this.state.peerConnection}
                     wrongOTP={this.state.wrongOTP}
+                    resetWrongOTP={this.resetWrongOTP}
                   />
                 </div>
               )}

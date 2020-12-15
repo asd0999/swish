@@ -17,7 +17,7 @@ export default class ShowOTP extends Component {
           <>
             <h2> OTP verified</h2>
             <span className="instruction"> Setting up P2P connection</span>
-            <Connecting />
+            <Connecting peerConnection={this.props.peerConnection} />
           </>
         ) : (
           <>
