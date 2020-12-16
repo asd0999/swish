@@ -333,12 +333,14 @@ input[type="file"] {
     justify-content: center;
 }
 
-.linkReceived input {
+.linkReceived a {
     width: 90%;
     border-bottom: none;
     text-align: center;
     margin: auto;
+    margin-top: 10px;
     margin-bottom: -12px;
+    overflow: hidden;
 }
 
 .noFile {

@@ -6,9 +6,9 @@ export default class Header extends Component {
     return (
       <div className="heading">
         <Spring
-          from={{ opacity: 0, marginLeft: -500 }}
+          from={{ opacity: 0, marginLeft: -100 }}
           to={{ opacity: 1, marginLeft: 20 }}
-          config={{ duration: 800 }}
+          config={{ duration: 1200 }}
         >
           {(props) => (
             <div style={props}>

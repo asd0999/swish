@@ -42,12 +42,9 @@ export default class Connecting extends Component {
     return (
       <div>
         {this.state.done ? (
-          <>
-            {this.props.clearFile && this.props.clearFile()}
-            {this.props.resetTransferingFile &&
-              this.props.resetTransferingFile()}
-            <Redirect to="/connected" />
-          </>
+          (this.resetTransferingFile && this.resetTransferingFile(),
+          this.resetFile && this.resetFile(),
+          (<Redirect to="/connected" />))
         ) : (
           <>
             <div className="loader">

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Spring } from "react-spring/renderprops";
 
 export default class Inbox extends Component {
@@ -8,13 +8,9 @@ export default class Inbox extends Component {
       <div className="inbox">
         <p>Inbox</p>
         <div className="linkReceived">
-          <Link href={this.props.linkReceived}>
-            <input
-              type="text"
-              value={this.props.linkReceived}
-              placeholder="no link"
-            />
-          </Link>
+          <a href={this.props.linkReceived} target="_blank">
+            {this.props.linkReceived}{" "}
+          </a>
         </div>
         {this.props.gotFile ? (
           <div className="downloadFile">

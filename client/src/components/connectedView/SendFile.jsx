@@ -17,9 +17,7 @@ export default class SendFile extends Component {
     console.log("file cleared");
     document.getElementById("select-file-input").value = "";
     let f = document.querySelector(".custom-file-input");
-    if (f) {
-      f.setAttribute("id", "");
-    }
+    f.setAttribute("id", "");
     this.props.resetFile();
   }
 
@@ -28,8 +26,8 @@ export default class SendFile extends Component {
     this.setState({
       transferingFile: true,
     });
-    // let f = document.querySelector(".custom-file-input");
-    // f.setAttribute("id", "");
+    let f = document.querySelector(".custom-file-input");
+    f.setAttribute("id", "");
   }
 
   fileUploaded(event) {
@@ -44,17 +42,24 @@ export default class SendFile extends Component {
     });
   }
 
+  componentWillReceiveProps(props) {
+    console.log("triggered function", props);
+    if (!props.file) {
+      this.resetTransferingFile();
+    }
+  }
+
   render() {
     return (
       <>
         <>
-          {this.props.file || this.props.fileTransferComplete ? (
+          {this.props.file ? (
             this.state.transferingFile ? (
               <Connecting
                 peerConnection={this.props.peerConnection}
                 // resetFile={this.props.resetFile}
-                resetTransferingFile={this.resetTransferingFile}
-                clearFile={this.clearFile}
+                // resetTransferingFile={this.resetTransferingFile}
+                // clearFile={this.clearFile}
               />
             ) : (
               <>

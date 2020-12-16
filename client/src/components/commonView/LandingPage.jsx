@@ -13,7 +13,7 @@ export default class LandingPage extends Component {
         >
           {(props) => (
             <div style={props}>
-              <h2 className="by-line">P2P content sharing</h2>
+              <h2 className="by-line">Share easily across devices</h2>
             </div>
           )}
         </Spring>
