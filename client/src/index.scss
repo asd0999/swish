@@ -15,6 +15,7 @@
 
 body {
     height: 100%;
+    background-color: rgba(253, 253, 14, 0.829);
 }
 
 .container {
@@ -25,7 +26,7 @@ body {
 
 .heading {
     width: 100%;
-    background-color: rgba(81, 174, 250, 0.849);
+    background-color: rgba(4, 4, 4, 0.849);
     padding-top: 30px;
     padding-bottom: 20px;
     margin-bottom: 40px;
@@ -44,6 +45,11 @@ body {
     text-align: center;
 }
 
+.sendBtn,
+.receiveBtn {
+    width: 160px;
+}
+
 .pairing-div {
     display: flex;
     flex-direction: column;
@@ -51,17 +57,17 @@ body {
 }
 
 .otp {
-    color: grey;
+    color: rgba(4, 4, 4, 0.849);
     // margin-bottom: -8px;
 }
 
 .refresh-otp {
     width: 140px;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 4px;
     // margin-bottom: 40px;
     border: none;
-    border-bottom: 1px solid black;
+    // border-bottom: 1px solid grey;
     /* box-shadow: 0px 2px 4px grey; */
 }
 
@@ -69,7 +75,8 @@ input[type="text"] {
     width: 140px;
     height: 40px;
     border: none;
-    border-bottom: 1px solid grey;
+    background-color: rgba(253, 253, 14, 0.829);
+    border-bottom: 1px solid rgba(4, 4, 4, 0.849);
     /* text-align: left; */
     /* font-size: 28px; */
     display: block;
@@ -79,7 +86,7 @@ input[type="text"] {
 
 #otp {
     text-align: center;
-    color: grey;
+    color: rgba(4, 4, 4, 0.849);
     position: absolute;
     top: 232px;
 }
@@ -108,13 +115,15 @@ input[type="submit"],
 button {
     min-width: 140px;
     height: 40px;
-    border-radius: 20px;
+    border-radius: 4px;
     margin-bottom: 20px;
     border: none;
-    border-bottom: 1px solid grey;
+    // border-bottom: 1px solid grey;
     padding: 0 20px;
     /* box-shadow: 0px 2px 4px grey; */
     cursor: pointer;
+    background-color: rgba(4, 4, 4, 0.849);
+    color: white;
 }
 
 button {
@@ -138,15 +147,23 @@ input[type="file"] {
 
 .custom-file-input {
     border: none;
-    border-bottom: 1px solid grey;
-    border-radius: 30px;
+    border-radius: 4px;
     /* background-color: rgba(81, 174, 250, 0.849); */
-    background-color: #e7e7e7;
+    background-color: rgba(4, 4, 4, 0.849);
+    color: white;
     text-align: center;
     cursor: pointer;
-    padding: 8px 28px;
+    padding: 0px 28px;
     position: relative;
     top: 16px;
+    height: 60px;
+    width: 200px;
+    padding-top: 36px;
+}
+
+#file-uploaded {
+    background-color: rgba(253, 253, 14, 0.829);
+    color: rgba(4, 4, 4, 0.849);
 }
 
 #dialog-footer {
@@ -167,8 +184,9 @@ input[type="file"] {
 }
 
 .choiceBtns {
-    position: absolute;
-    top: 260px;
+    // position: absolute;
+    // top: 260px;
+    margin-top: 100px;
 }
 
 .refresh-otp {
@@ -180,6 +198,10 @@ input[type="file"] {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#fileIcon img {
+    height: 40px;
 }
 
 .fileShare {
@@ -201,9 +223,10 @@ input[type="file"] {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    position: absolute;
-    bottom: 50px;
+    // position: absolute;
+    // bottom: 50px;
     height: 120px;
+    margin-top: 200px;
 }
 
 .linkToSend-label {
@@ -227,7 +250,7 @@ input[type="file"] {
     width: 200px;
     height: 36px;
     border-radius: 18px;
-    background-color: rgba(81, 174, 250, 0.849);
+    background-color: rgba(4, 4, 4, 0.849);
     border: solid 1px transparent;
     color: #fff;
     font-size: 18px;
@@ -250,7 +273,7 @@ input[type="file"] {
     background: transparent;
     margin: 30px auto 0 auto;
     border: solid 2px #fff;
-    border-top: solid 2px rgba(81, 174, 250, 0.849);
+    border-top: solid 2px rgba(4, 4, 4, 0.849);
     border-radius: 50%;
     opacity: 0;
     // margin-bottom: 34px;
@@ -269,14 +292,14 @@ input[type="file"] {
         display: block;
         width: 10px;
         height: 2px;
-        background-color: rgba(81, 174, 250, 0.849);
+        background-color: rgba(4, 4, 4, 0.849);
         transform: rotate(45deg);
     }
     span:nth-child(2) {
         display: block;
         width: 20px;
         height: 2px;
-        background-color: rgba(81, 174, 250, 0.849);
+        background-color: rgba(4, 4, 4, 0.849);
         transform: rotate(-45deg) translate3d(14px, -4px, 0);
         transform-origin: 100%;
     }
@@ -306,6 +329,6 @@ input[type="file"] {
     100% {
         opacity: 1;
         transform: rotate(1080deg);
-        border-color: rgba(81, 174, 250, 0.849);
+        border-color: rgba(4, 4, 4, 0.849);
     }
 }

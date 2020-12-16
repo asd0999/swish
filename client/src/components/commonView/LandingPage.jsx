@@ -9,21 +9,18 @@ export default class LandingPage extends Component {
         <Spring
           from={{ opacity: 0 }}
           to={{ opacity: 1 }}
-          config={{ delay: 1200, duration: 1000 }}
+          config={{ delay: 600, duration: 1000 }}
         >
           {(props) => (
             <div style={props}>
-              <p>Share URLs and files between devices</p>
-              <p>Password free</p>
-              <p>Convinient</p>
-              <p>Secure</p>
+              <h2>Share files and URLs between devices</h2>
             </div>
           )}
         </Spring>
         <Spring
-          from={{ opacity: 0 }}
-          to={{ opacity: 1 }}
-          config={{ delay: 100, duration: 100 }}
+          from={{ opacity: 0, marginTop: 500 }}
+          to={{ opacity: 1, marginTop: 100 }}
+          config={{ delay: 1000, duration: 300 }}
         >
           {(props) => (
             <div className="choiceBtns" style={props}>

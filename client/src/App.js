@@ -35,6 +35,7 @@ export default class App extends Component {
       initiator: false,
       wrongOTP: false,
       OTPaccepted: false,
+      file: false,
     };
     this.checkApi = this.checkApi.bind(this);
     this.requestOTP = this.requestOTP.bind(this);
@@ -269,6 +270,7 @@ export default class App extends Component {
   }
 
   sendFile() {
+    // let self = this;
     if (this.state.file) {
       const self = this;
       const stream = this.state.file.stream();
@@ -287,6 +289,9 @@ export default class App extends Component {
             })
           );
           console.log("sent EOF chunk");
+          self.setState({
+            fileTransferComplete: true,
+          });
           return;
         }
 
@@ -340,6 +345,7 @@ export default class App extends Component {
       otp: null,
       peer_sid: null,
       file: null,
+      fileTransferComplete: false,
     });
     peer = null;
     socket.emit("peerDisconnected");
@@ -404,6 +410,7 @@ export default class App extends Component {
                     download={this.download}
                     resetFile={this.resetFile}
                     file={this.state.file}
+                    fileTransferComplete={this.state.fileTransferComplete}
                   />
                 </>
               )}
