@@ -259,10 +259,8 @@ export default class App extends Component {
   }
 
   resetFile() {
-    console.log("resetting file and tf comp");
     this.setState({
       file: false,
-      // fileTransferComplete: false,
     });
   }
 
@@ -273,7 +271,7 @@ export default class App extends Component {
   }
 
   sendFile() {
-    let self = this;
+    let self = this; //ignore linter
     if (this.state.file) {
       const self = this;
       const stream = this.state.file.stream();
@@ -294,7 +292,6 @@ export default class App extends Component {
           console.log("sent EOF chunk");
           setTimeout(() => {
             self.setState({
-              // fileTransferComplete: true,
               file: false,
             });
           }, 3000); //time for animation
@@ -351,7 +348,6 @@ export default class App extends Component {
       otp: null,
       peer_sid: null,
       file: undefined,
-      // fileTransferComplete: false,
     });
     peer = null;
     socket.emit("peerDisconnected");
@@ -417,7 +413,6 @@ export default class App extends Component {
                       download={this.download}
                       resetFile={this.resetFile}
                       file={this.state.file}
-                      // fileTransferComplete={this.state.fileTransferComplete}
                       linkReceived={this.state.linkReceived}
                     />
                   </>

@@ -8,9 +8,13 @@ export default class Inbox extends Component {
       <div className="inbox">
         <p>Inbox</p>
         <div className="linkReceived">
-          <a href={this.props.linkReceived} target="_blank">
-            {this.props.linkReceived}{" "}
-          </a>
+          {this.props.linkReceived ? (
+            <a href={this.props.linkReceived} target="_blank">
+              {this.props.linkReceived}{" "}
+            </a>
+          ) : (
+            "No link"
+          )}
         </div>
         {this.props.gotFile ? (
           <div className="downloadFile">

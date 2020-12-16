@@ -13,7 +13,11 @@ export default class LandingPage extends Component {
         >
           {(props) => (
             <div style={props}>
-              <h2 className="by-line">Share easily across devices</h2>
+              <h2 className="by-line">
+                Sharing across devices
+                <br />
+                Made simple{" "}
+              </h2>
             </div>
           )}
         </Spring>
@@ -24,7 +28,7 @@ export default class LandingPage extends Component {
         >
           {(props) => (
             <>
-              <p style={props}>Get started!</p>
+              {/* <p style={props}>Get started!</p> */}
               <div className="choiceBtns" style={props}>
                 <Choice
                   peerConnection={this.props.peerConnection}
