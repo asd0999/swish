@@ -56,6 +56,7 @@ export default class DataTransfer extends Component {
                 resetFile={this.props.resetFile}
                 file={this.props.file}
                 fileTransferComplete={this.props.fileTransferComplete}
+                peerConnection={this.props.peerConnection}
               />
             </div>
             <div className="linkShare">

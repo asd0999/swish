@@ -289,9 +289,11 @@ export default class App extends Component {
             })
           );
           console.log("sent EOF chunk");
-          self.setState({
-            fileTransferComplete: true,
-          });
+          setTimeout(() => {
+            self.setState({
+              fileTransferComplete: true,
+            });
+          }, 3000); //time for animation
           return;
         }
 
