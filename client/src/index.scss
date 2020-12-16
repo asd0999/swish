@@ -15,52 +15,44 @@
 
 body {
     height: 100%;
-    // background-color: rgb(247, 230, 43);
     background-color: #fcdf12;
-    // background: linear-gradient(103deg, #f4f802, #f2740e);
-    // background-size: 400% 400%;
-    // -webkit-animation: AnimationName 10s ease infinite;
-    // -moz-animation: AnimationName 10s ease infinite;
-    // animation: AnimationName 10s ease infinite;
 }
 
-// @-webkit-keyframes AnimationName {
-//     0% {
-//         background-position: 0% 60%;
-//     }
-//     50% {
-//         background-position: 100% 41%;
-//     }
-//     100% {
-//         background-position: 0% 60%;
-//     }
-// }
-// @-moz-keyframes AnimationName {
-//     0% {
-//         background-position: 0% 60%;
-//     }
-//     50% {
-//         background-position: 100% 41%;
-//     }
-//     100% {
-//         background-position: 0% 60%;
-//     }
-// }
-// @keyframes AnimationName {
-//     0% {
-//         background-position: 0% 60%;
-//     }
-//     50% {
-//         background-position: 100% 41%;
-//     }
-//     100% {
-//         background-position: 0% 60%;
-//     }
-// }
+.outer {
+    display: flex;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.cover-image {
+    width: 64%;
+    height: 100vh;
+    display: none;
+}
+
+.cover-image img {
+    width: calc(64vw);
+}
+
+.yellow {
+    height: 90px;
+    width: 100%;
+    background-color: #fcdf12;
+}
+
+.footer {
+    width: 36%;
+    height: 64px;
+    display: none;
+    background-color: rgba(4, 4, 4, 0.95);
+    position: absolute;
+    bottom: 0;
 }
 
 .heading {
@@ -72,6 +64,10 @@ body {
     color: white;
     text-align: center;
     height: 40px;
+}
+
+.by-line {
+    margin-bottom: 40px;
 }
 
 .instruction {
@@ -266,7 +262,7 @@ input[type="file"] {
     // position: absolute;
     // bottom: 50px;
     height: 120px;
-    margin-top: 100px;
+    margin-top: 16px;
 }
 
 .linkToSend-label {
@@ -307,7 +303,7 @@ input[type="file"] {
     align-items: center;
     justify-content: flex-start;
     height: 150px;
-    margin-top: 100px;
+    margin-top: 44px;
 }
 
 .inbox {
@@ -343,6 +339,7 @@ input[type="file"] {
 
 /* ################################### */
 
+// animation
 .user-visual {
     position: relative;
     display: block;
@@ -429,5 +426,32 @@ input[type="file"] {
         opacity: 1;
         transform: rotate(1080deg);
         border-color: rgba(4, 4, 4, 0.95);
+    }
+}
+
+
+/* ################################### */
+
+// media query
+// mobile
+@media only screen and (max-width: 600px) {
+    .linkShare {
+        margin-top: 8px;
+    }
+    .itemsReceived {
+        margin-top: 32px;
+    }
+}
+
+//laptop
+@media only screen and (min-width: 600px) {
+    .container {
+        width: 36%;
+    }
+    .cover-image {
+        display: inline;
+    }
+    .footer {
+        display: inline;
     }
 }

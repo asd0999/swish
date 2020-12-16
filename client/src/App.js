@@ -360,67 +360,74 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <BrowserRouter>
-          <Header />
-          <Switch>
-            <Route exact path="/">
-              <LandingPage
-                peerConnection={this.state.peerConnection}
-                refreshPage={this.refreshPage}
+      <div className="outer">
+        <div className="container">
+          <BrowserRouter>
+            <Header />
+            <Switch>
+              <Route exact path="/">
+                <LandingPage
+                  peerConnection={this.state.peerConnection}
+                  refreshPage={this.refreshPage}
+                />
+              </Route>
+              <Route
+                path="/send"
+                render={(props) => (
+                  <div className="pairing-div">
+                    <ShowOTP
+                      {...props}
+                      requestOTP={this.requestOTP}
+                      otp={this.state.otp}
+                      peerConnection={this.state.peerConnection}
+                      initiator={this.initiator}
+                    />
+                  </div>
+                )}
               />
-            </Route>
-            <Route
-              path="/send"
-              render={(props) => (
-                <div className="pairing-div">
-                  <ShowOTP
-                    {...props}
-                    requestOTP={this.requestOTP}
-                    otp={this.state.otp}
-                    peerConnection={this.state.peerConnection}
-                    initiator={this.initiator}
-                  />
-                </div>
-              )}
-            />
-            <Route
-              path="/receive"
-              render={(props) => (
-                <div className="pairing-div">
-                  <EnterOTP
-                    {...props}
-                    pairPeers={this.pairPeers}
-                    peerConnection={this.state.peerConnection}
-                    wrongOTP={this.state.wrongOTP}
-                    resetWrongOTP={this.resetWrongOTP}
-                    OTPaccepted={this.state.OTPaccepted}
-                  />
-                </div>
-              )}
-            />
-            <Route
-              path="/connected"
-              render={(props) => (
-                <>
-                  <DataTransfer
-                    {...props}
-                    peerConnection={this.state.peerConnection}
-                    sendLink={this.sendLink}
-                    gotFile={this.state.gotFile}
-                    sendFile={this.sendFile}
-                    selectFile={this.selectFile}
-                    download={this.download}
-                    resetFile={this.resetFile}
-                    file={this.state.file}
-                    fileTransferComplete={this.state.fileTransferComplete}
-                    linkReceived={this.state.linkReceived}
-                  />
-                </>
-              )}
-            />
-          </Switch>
-        </BrowserRouter>
+              <Route
+                path="/receive"
+                render={(props) => (
+                  <div className="pairing-div">
+                    <EnterOTP
+                      {...props}
+                      pairPeers={this.pairPeers}
+                      peerConnection={this.state.peerConnection}
+                      wrongOTP={this.state.wrongOTP}
+                      resetWrongOTP={this.resetWrongOTP}
+                      OTPaccepted={this.state.OTPaccepted}
+                    />
+                  </div>
+                )}
+              />
+              <Route
+                path="/connected"
+                render={(props) => (
+                  <>
+                    <DataTransfer
+                      {...props}
+                      peerConnection={this.state.peerConnection}
+                      sendLink={this.sendLink}
+                      gotFile={this.state.gotFile}
+                      sendFile={this.sendFile}
+                      selectFile={this.selectFile}
+                      download={this.download}
+                      resetFile={this.resetFile}
+                      file={this.state.file}
+                      fileTransferComplete={this.state.fileTransferComplete}
+                      linkReceived={this.state.linkReceived}
+                    />
+                  </>
+                )}
+              />
+            </Switch>
+          </BrowserRouter>
+          <div className="footer"></div>
+        </div>
+        <div className="cover-image">
+          <div className="yellow"></div>
+          <img src="../annie-spratt-zirg6VtZf5M-unsplash.jpg" alt="cover img" />
+        </div>
       </div>
     );
   }

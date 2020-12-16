@@ -13,13 +13,14 @@ export default class LandingPage extends Component {
         >
           {(props) => (
             <div style={props}>
-              <h2>Share files and URLs between devices</h2>
+              <h3 className="by-line">Share files and links between devices</h3>
+              <h3>Easy, fast and secure</h3>
             </div>
           )}
         </Spring>
         <Spring
           from={{ opacity: 0, marginTop: 500 }}
-          to={{ opacity: 1, marginTop: 100 }}
+          to={{ opacity: 1, marginTop: 42 }}
           config={{ delay: 1000, duration: 300 }}
         >
           {(props) => (
