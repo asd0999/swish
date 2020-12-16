@@ -17,10 +17,10 @@ export default class Choice extends Component {
           </>
         ) : (
           <>
-            <Link to="/send">
+            <Link to="/generate-otp">
               <button className="sendBtn">GENERATE OTP</button>
             </Link>
-            <Link to="/receive">
+            <Link to="/enter-otp">
               <button className="receiveBtn">ENTER OTP</button>
             </Link>
           </>

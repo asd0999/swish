@@ -10,13 +10,16 @@ export default class SendFile extends Component {
     this.clearFile = this.clearFile.bind(this);
     this.fileUploaded = this.fileUploaded.bind(this);
     this.triggerSendFile = this.triggerSendFile.bind(this);
+    this.resetTransferingFile = this.resetTransferingFile.bind(this);
   }
 
   clearFile() {
     console.log("file cleared");
     document.getElementById("select-file-input").value = "";
     let f = document.querySelector(".custom-file-input");
-    f.setAttribute("id", "");
+    if (f) {
+      f.setAttribute("id", "");
+    }
     this.props.resetFile();
   }
 
@@ -25,8 +28,8 @@ export default class SendFile extends Component {
     this.setState({
       transferingFile: true,
     });
-    let f = document.querySelector(".custom-file-input");
-    f.setAttribute("id", "");
+    // let f = document.querySelector(".custom-file-input");
+    // f.setAttribute("id", "");
   }
 
   fileUploaded(event) {
@@ -35,13 +38,24 @@ export default class SendFile extends Component {
     f.setAttribute("id", "file-uploaded");
   }
 
+  resetTransferingFile() {
+    this.setState({
+      transferingFile: false,
+    });
+  }
+
   render() {
     return (
       <>
         <>
-          {this.props.file && !this.props.fileTransferComplete ? (
+          {this.props.file || this.props.fileTransferComplete ? (
             this.state.transferingFile ? (
-              <Connecting peerConnection={this.props.peerConnection} />
+              <Connecting
+                peerConnection={this.props.peerConnection}
+                // resetFile={this.props.resetFile}
+                resetTransferingFile={this.resetTransferingFile}
+                clearFile={this.clearFile}
+              />
             ) : (
               <>
                 <label
@@ -52,8 +66,20 @@ export default class SendFile extends Component {
                   <div id="fileIcon">
                     <img src="../file-icon.png" alt="file icon" />
                   </div>
-                  <span>{this.props.file.name}</span>
+                  <span>{this.props.file.name && this.props.file.name}</span>
                 </label>
+                <div id="dialog-footer">
+                  <button
+                    id="cancel-button"
+                    className="cancel-button"
+                    onClick={this.clearFile}
+                  >
+                    Cancel
+                  </button>
+                  <button id="ok-button" onClick={this.triggerSendFile}>
+                    Send
+                  </button>
+                </div>
               </>
             )
           ) : (
@@ -65,28 +91,23 @@ export default class SendFile extends Component {
               Share file
             </label>
           )}
-          <input
-            type="file"
-            id="select-file-input"
-            onChange={(event) => {
-              this.fileUploaded(event);
-            }}
-          />
         </>
-        {this.props.file && !this.props.fileTransferComplete ? (
-          <div id="dialog-footer">
-            <button
-              id="cancel-button"
-              className="cancel-button"
-              onClick={this.clearFile}
-            >
-              Cancel
-            </button>
-            <button id="ok-button" onClick={this.triggerSendFile}>
-              Send
-            </button>
-          </div>
-        ) : null}
+        {/* {this.props.fileTransferComplete ? (
+          <label
+            htmlFor="select-file-input"
+            className="custom-file-input"
+            onClick={this.props.showFileInput}
+          >
+            Share file
+          </label>
+        ) : null} */}
+        <input
+          type="file"
+          id="select-file-input"
+          onChange={(event) => {
+            this.fileUploaded(event);
+          }}
+        />
       </>
     );
   }

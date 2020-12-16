@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import url("https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+:root {
+    // --background: #fcdf12;
+    --background: #fadb14;
+    --contrast: rgba(24, 24, 24, 1);
+    --text1: white;
+    --text2: rgba(24, 24, 24, 1);
+    // --background: rgba(4, 4, 4, 0.25);
+    // --text1: black;
+}
+
 
 /* $green: #1ECD97; */
 
@@ -15,7 +25,7 @@
 
 body {
     height: 100%;
-    background-color: #fcdf12;
+    background-color: var(--background);
 }
 
 .outer {
@@ -28,12 +38,14 @@ body {
     align-items: center;
     width: 100vw;
     height: 100vh;
+    background-color: var(--background);
 }
 
 .cover-image {
     width: 64%;
     height: 100vh;
     display: none;
+    background-color: var(--contrast);
 }
 
 .cover-image img {
@@ -43,31 +55,33 @@ body {
 .yellow {
     height: 90px;
     width: 100%;
-    background-color: #fcdf12;
+    background-color: var(--background);
 }
 
 .footer {
     width: 36%;
     height: 64px;
     display: none;
-    background-color: rgba(4, 4, 4, 0.95);
+    background-color: var(--contrast);
     position: absolute;
     bottom: 0;
 }
 
 .heading {
     width: 100%;
-    background-color: rgba(4, 4, 4, 0.95);
-    padding-top: 30px;
+    // background-color: var(--contrast);
+    background-color: var(--background);
+    padding-top: 20px;
     padding-bottom: 20px;
     margin-bottom: 40px;
-    color: white;
-    text-align: center;
+    color: var(--text2);
+    text-align: left;
     height: 40px;
+    // border-bottom: 1px solid var(--contrast);
 }
 
 .by-line {
-    margin-bottom: 40px;
+    margin-bottom: 86px;
 }
 
 .instruction {
@@ -91,11 +105,6 @@ body {
     align-items: center;
 }
 
-.otp {
-    color: rgba(4, 4, 4, 0.95);
-    // margin-bottom: -8px;
-}
-
 .refresh-otp {
     width: 140px;
     height: 40px;
@@ -111,7 +120,7 @@ input[type="text"] {
     height: 40px;
     border: none;
     background-color: rgba(253, 253, 14, 0);
-    border-bottom: 1px solid rgba(4, 4, 4, 0.95);
+    border-bottom: 1px solid var(--contrast);
     /* text-align: left; */
     /* font-size: 28px; */
     display: block;
@@ -121,7 +130,7 @@ input[type="text"] {
 
 #otp {
     text-align: center;
-    color: rgba(4, 4, 4, 0.95);
+    color: var(--text2);
     position: absolute;
     top: 232px;
 }
@@ -137,8 +146,9 @@ input[type="text"] {
 
 .otp {
     position: absolute;
-    top: 236px;
+    top: 232px;
     margin: 0 0 0 10px;
+    color: var(--text2);
 }
 
 .label-OTP-input {
@@ -157,8 +167,8 @@ button {
     padding: 0 20px;
     /* box-shadow: 0px 2px 4px grey; */
     cursor: pointer;
-    background-color: rgba(4, 4, 4, 0.95);
-    color: white;
+    background-color: var(--contrast);
+    color: var(--text1);
 }
 
 button {
@@ -184,8 +194,8 @@ input[type="file"] {
     border: none;
     border-radius: 4px;
     /* background-color: rgba(81, 174, 250, 0.95); */
-    background-color: rgba(4, 4, 4, 0.95);
-    color: white;
+    background-color: var(--contrast);
+    color: var(--text1);
     text-align: center;
     cursor: pointer;
     padding: 0px 28px;
@@ -198,8 +208,8 @@ input[type="file"] {
 
 #file-uploaded {
     background-color: rgba(253, 253, 14, 0);
-    color: rgba(4, 4, 4, 0.95);
-    margin-top: -40px;
+    color: var(--text2);
+    margin-top: -66px;
 }
 
 #dialog-footer {
@@ -227,7 +237,7 @@ input[type="file"] {
 
 .refresh-otp {
     position: absolute;
-    top: 260px;
+    top: 258px;
 }
 
 .extra-div {
@@ -262,7 +272,7 @@ input[type="file"] {
     // position: absolute;
     // bottom: 50px;
     height: 120px;
-    margin-top: 16px;
+    margin-top: -30px;
 }
 
 .linkToSend-label {
@@ -285,8 +295,8 @@ input[type="file"] {
     border: none;
     border-radius: 4px;
     /* background-color: rgba(81, 174, 250, 0.95); */
-    background-color: rgba(4, 4, 4, 0.95);
-    color: white;
+    background-color: var(--contrast);
+    color: var(--text1);
     text-align: center;
     cursor: pointer;
     padding: 0px 28px;
@@ -307,7 +317,7 @@ input[type="file"] {
 }
 
 .inbox {
-    border: 4px solid rgba(4, 4, 4, 0.95);
+    border: 4px solid var(--contrast);
     border-radius: 4px;
     text-align: center;
     cursor: pointer;
@@ -333,7 +343,7 @@ input[type="file"] {
 
 .noFile {
     background-color: rgba(4, 4, 4, 0);
-    color: rgba(4, 4, 4, 0.95);
+    color: var(--text2);
 }
 
 
@@ -346,16 +356,16 @@ input[type="file"] {
     width: 200px;
     height: 36px;
     border-radius: 18px;
-    background-color: rgba(4, 4, 4, 0.95);
+    background-color: var(--contrast);
     border: solid 1px transparent;
-    color: #fff;
+    color: var(--text1);
     font-size: 18px;
     font-weight: 300;
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     &:hover {
         background-color: transparent;
-        border-color: #fff;
+        border-color: var(--text1);
         transition: all 0.1s ease-in-out;
     }
 }
@@ -368,8 +378,8 @@ input[type="file"] {
     height: 50px;
     background: transparent;
     margin: 30px auto 0 auto;
-    border: solid 2px #fff;
-    border-top: solid 2px rgba(4, 4, 4, 0.95);
+    border: solid 2px var(--text1);
+    border-top: solid 2px var(--contrast);
     border-radius: 50%;
     opacity: 0;
     // margin-bottom: 34px;
@@ -388,14 +398,14 @@ input[type="file"] {
         display: block;
         width: 10px;
         height: 2px;
-        background-color: rgba(4, 4, 4, 0.95);
+        background-color: var(--contrast);
         transform: rotate(45deg);
     }
     span:nth-child(2) {
         display: block;
         width: 20px;
         height: 2px;
-        background-color: rgba(4, 4, 4, 0.95);
+        background-color: var(--contrast);
         transform: rotate(-45deg) translate3d(14px, -4px, 0);
         transform-origin: 100%;
     }
@@ -420,12 +430,12 @@ input[type="file"] {
     85% {
         opacity: 1;
         transform: rotate(1080deg);
-        border-color: #fff;
+        border-color: var(--text1);
     }
     100% {
         opacity: 1;
         transform: rotate(1080deg);
-        border-color: rgba(4, 4, 4, 0.95);
+        border-color: var(--contrast);
     }
 }
 
@@ -436,7 +446,7 @@ input[type="file"] {
 // mobile
 @media only screen and (max-width: 600px) {
     .linkShare {
-        margin-top: 8px;
+        margin-top: -40px;
     }
     .itemsReceived {
         margin-top: 32px;
@@ -447,6 +457,7 @@ input[type="file"] {
 @media only screen and (min-width: 600px) {
     .container {
         width: 36%;
+        min-width: 420px;
     }
     .cover-image {
         display: inline;

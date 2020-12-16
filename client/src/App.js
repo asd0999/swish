@@ -35,7 +35,7 @@ export default class App extends Component {
       initiator: false,
       wrongOTP: false,
       OTPaccepted: false,
-      file: false,
+      file: undefined,
     };
     this.checkApi = this.checkApi.bind(this);
     this.requestOTP = this.requestOTP.bind(this);
@@ -259,8 +259,10 @@ export default class App extends Component {
   }
 
   resetFile() {
+    console.log("resetting file and tf comp");
     this.setState({
-      file: null,
+      file: false,
+      fileTransferComplete: false,
     });
   }
 
@@ -296,14 +298,14 @@ export default class App extends Component {
             });
           }, 3000); //time for animation
           return;
+        } else {
+          peer.write(value);
+          // console.log(value);
+          console.log("sent a chunk");
+          reader.read().then((obj) => {
+            handleReading(obj.done, obj.value);
+          });
         }
-
-        peer.write(value);
-        // console.log(value);
-        console.log("sent a chunk");
-        reader.read().then((obj) => {
-          handleReading(obj.done, obj.value);
-        });
       }
     }
   }
@@ -347,7 +349,7 @@ export default class App extends Component {
       peerConnection: false,
       otp: null,
       peer_sid: null,
-      file: null,
+      file: undefined,
       fileTransferComplete: false,
     });
     peer = null;
@@ -372,7 +374,7 @@ export default class App extends Component {
                 />
               </Route>
               <Route
-                path="/send"
+                path="/generate-otp"
                 render={(props) => (
                   <div className="pairing-div">
                     <ShowOTP
@@ -386,7 +388,7 @@ export default class App extends Component {
                 )}
               />
               <Route
-                path="/receive"
+                path="/enter-otp"
                 render={(props) => (
                   <div className="pairing-div">
                     <EnterOTP
@@ -422,11 +424,11 @@ export default class App extends Component {
               />
             </Switch>
           </BrowserRouter>
-          <div className="footer"></div>
+          {/* <div className="footer"></div> */}
         </div>
         <div className="cover-image">
-          <div className="yellow"></div>
-          <img src="../annie-spratt-zirg6VtZf5M-unsplash.jpg" alt="cover img" />
+          {/* <div className="yellow"></div> */}
+          {/* <img src="../annie-spratt-zirg6VtZf5M-unsplash.jpg" alt="cover img" /> */}
         </div>
       </div>
     );

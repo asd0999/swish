@@ -6,13 +6,13 @@ export default class Header extends Component {
     return (
       <div className="heading">
         <Spring
-          from={{ opacity: 0, marginTop: -500 }}
-          to={{ opacity: 1, marginTop: 0 }}
-          config={{ duration: 1000 }}
+          from={{ opacity: 0, marginLeft: -500 }}
+          to={{ opacity: 1, marginLeft: 20 }}
+          config={{ duration: 800 }}
         >
           {(props) => (
             <div style={props}>
-              <h1>SWIISH</h1>
+              <h1>SW</h1>
             </div>
           )}
         </Spring>
