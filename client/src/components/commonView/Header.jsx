@@ -12,7 +12,7 @@ export default class Header extends Component {
         >
           {(props) => (
             <div style={props}>
-              <h1>Swiiish</h1>
+              <h1>SWIISH</h1>
             </div>
           )}
         </Spring>
