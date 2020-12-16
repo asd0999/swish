@@ -57,7 +57,11 @@ export default class SendFile extends Component {
               </>
             )
           ) : (
-            <label htmlFor="select-file-input" className="custom-file-input">
+            <label
+              htmlFor="select-file-input"
+              className="custom-file-input"
+              onClick={this.props.showFileInput}
+            >
               Share file
             </label>
           )}
@@ -71,15 +75,15 @@ export default class SendFile extends Component {
         </>
         {this.props.file && !this.props.fileTransferComplete ? (
           <div id="dialog-footer">
-            <button id="ok-button" onClick={this.triggerSendFile}>
-              Send
-            </button>
             <button
               id="cancel-button"
               className="cancel-button"
               onClick={this.clearFile}
             >
               Cancel
+            </button>
+            <button id="ok-button" onClick={this.triggerSendFile}>
+              Send
             </button>
           </div>
         ) : null}

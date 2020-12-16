@@ -177,6 +177,7 @@ export default class App extends Component {
 
       socket.on("link", (data) => {
         console.log(data);
+        this.setState({ linkReceived: data });
       });
 
       socket.on("otp", (otp) => {
@@ -413,6 +414,7 @@ export default class App extends Component {
                     resetFile={this.resetFile}
                     file={this.state.file}
                     fileTransferComplete={this.state.fileTransferComplete}
+                    linkReceived={this.state.linkReceived}
                   />
                 </>
               )}
