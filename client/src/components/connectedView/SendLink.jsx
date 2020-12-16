@@ -24,6 +24,7 @@ export default class SendLink extends Component {
     this.setState({
       link: "",
     });
+    this.changeLinkInput();
   }
 
   changeLinkInput() {

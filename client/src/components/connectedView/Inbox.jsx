@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Inbox extends Component {
   render() {
@@ -6,14 +7,20 @@ export default class Inbox extends Component {
       <div className="inbox">
         <p>Inbox</p>
         <div className="linkReceived">
-          <input type="text" value={this.props.linkReceived} />
+          <Link href={this.props.linkReceived}>
+            <input
+              type="text"
+              value={this.props.linkReceived}
+              placeholder="no link"
+            />
+          </Link>
         </div>
         {this.props.gotFile ? (
           <div className="downloadFile">
-            <button onClick={this.props.download}>Download</button>
+            <button onClick={this.props.download}>Got file!</button>
           </div>
         ) : (
-          <button disabled="disabled">No File</button>
+          <button className="noFile">No File</button>
         )}
       </div>
     );

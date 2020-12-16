@@ -329,6 +329,15 @@ input[type="file"] {
 
 .linkReceived input {
     width: 90%;
+    border-bottom: none;
+    text-align: center;
+    margin: auto;
+    margin-bottom: -12px;
+}
+
+.noFile {
+    background-color: rgba(4, 4, 4, 0);
+    color: rgba(4, 4, 4, 0.95);
 }
 
 
