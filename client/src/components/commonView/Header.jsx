@@ -8,7 +8,7 @@ export default class Header extends Component {
         <Spring
           from={{ opacity: 0, marginLeft: -100 }}
           to={{ opacity: 1, marginLeft: 20 }}
-          config={{ duration: 1200 }}
+          config={{ duration: 600 }}
         >
           {(props) => (
             <div style={props}>
@@ -20,7 +20,7 @@ export default class Header extends Component {
           <Spring
             from={{ opacity: 0, marginRight: -100 }}
             to={{ opacity: 1, marginRight: 8 }}
-            config={{ delay: 4000, duration: 800 }}
+            config={{ delay: 3600, duration: 500 }}
           >
             {(props) => (
               // <div style={props}>
