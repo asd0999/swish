@@ -369,9 +369,11 @@ export default class App extends Component {
       otp: null,
       peer_sid: null,
       file: undefined,
+      OTPaccepted: false,
     });
     peer = null;
     socket.emit("peerDisconnected");
+    this.refreshPage();
   }
 
   refreshPage() {
@@ -385,6 +387,7 @@ export default class App extends Component {
           <BrowserRouter>
             <Header
               peerConnection={this.state.peerConnection}
+              resetState={this.resetState}
               refreshPage={this.refreshPage}
             />{" "}
             <Switch>

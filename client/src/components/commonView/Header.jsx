@@ -1,7 +1,18 @@
 import React, { Component } from "react";
 import { Spring } from "react-spring/renderprops";
+import { Redirect } from "react-router-dom";
 
 export default class Header extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.disconnect = this.disconnect.bind(this);
+  // }
+
+  // disconnect() {
+  //   // this.props.resetState();
+  //   <Redirect to="/" />;
+  // }
+
   render() {
     return (
       <div className="heading">
@@ -26,12 +37,11 @@ export default class Header extends Component {
               // <div style={props}>
               <button
                 id="disconnect"
-                style={props}
                 onClick={this.props.refreshPage}
+                style={props}
               >
                 DISCONNECT
               </button>
-              // </div>
             )}
           </Spring>
         ) : null}
