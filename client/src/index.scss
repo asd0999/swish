@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import url("https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
 :root {
     // --background: #fcdf12;
     --background: #fadb14;
@@ -9,12 +10,6 @@
     // --background: rgba(4, 4, 4, 0.25);
     // --text1: black;
 }
-
-
-/* $green: #1ECD97; */
-
-
-/* $gray: #bbbbbb; */
 
 * {
     /* border: 1px solid blue; */
@@ -46,6 +41,7 @@ body {
     height: 100vh;
     display: none;
     background-color: var(--contrast);
+    color: var(--background);
 }
 
 .cover-image img {
@@ -69,7 +65,6 @@ body {
 
 .heading {
     width: 100%;
-    // background-color: var(--contrast);
     background-color: var(--background);
     padding-top: 20px;
     padding-bottom: 20px;
@@ -77,7 +72,10 @@ body {
     color: var(--text2);
     text-align: left;
     height: 40px;
-    // border-bottom: 1px solid var(--contrast);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .by-line {
@@ -351,12 +349,17 @@ a:active {
     top: 16px;
     height: 100%;
     width: 250px;
-    padding-top: 8px;
+    padding-top: 0px;
 }
 
 .linkReceived {
     display: flex;
     justify-content: center;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: -12px;
+    overflow: hidden;
+    font-size: 13.3px;
 }
 
 .linkReceived a {
@@ -382,6 +385,60 @@ a:active {
 
 .noFile:hover {
     color: var(--text2);
+}
+
+#inbox {
+    background-color: var(--contrast);
+    color: white;
+    height: 20px;
+    padding: 4px 0;
+    margin-bottom: 12px;
+}
+
+#disconnect {
+    background-color: rgba(4, 4, 4, 0);
+    color: var(--contrast);
+    margin: 0;
+    cursor: pointer;
+}
+
+#disconnect:hover {
+    background-color: var(--contrast);
+    color: var(--text1);
+}
+
+
+/* ################################### */
+
+// about info
+.aboutInfo {
+    padding: 40px;
+    color: var(--background);
+    margin-top: 86px;
+}
+
+#title,
+#el-pitch,
+#list,
+#startby,
+#more-info {
+    margin-bottom: 30px;
+}
+
+#list li {
+    margin: 10px 0 0 30px;
+    font-size: 20px;
+}
+
+#startby {
+    margin-top: 60px;
+    font-size: 20px;
+}
+
+#more-info {
+    margin-top: 60px;
+    font-size: 16px;
+    font-family: "Open Sans", sans-serif;
 }
 
 

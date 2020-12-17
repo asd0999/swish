@@ -8,6 +8,7 @@ import streamSaver from "streamsaver";
 import DataTransfer from "./components/connectedView/DataTransfer";
 import Header from "./components/commonView/Header";
 import LandingPage from "./components/commonView/LandingPage";
+import AboutInfo from "./components/commonView/AboutInfo";
 
 let peer = null;
 const worker = new Worker("../worker.js");
@@ -362,7 +363,10 @@ export default class App extends Component {
       <div className="outer">
         <div className="container">
           <BrowserRouter>
-            <Header />
+            <Header
+              peerConnection={this.state.peerConnection}
+              refreshPage={this.refreshPage}
+            />
             <Switch>
               <Route exact path="/">
                 <LandingPage
@@ -423,8 +427,7 @@ export default class App extends Component {
           {/* <div className="footer"></div> */}
         </div>
         <div className="cover-image">
-          {/* <div className="yellow"></div> */}
-          {/* <img src="../annie-spratt-zirg6VtZf5M-unsplash.jpg" alt="cover img" /> */}
+          <AboutInfo />
         </div>
       </div>
     );

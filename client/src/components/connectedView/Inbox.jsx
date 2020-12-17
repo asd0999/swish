@@ -1,19 +1,18 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import { Spring } from "react-spring/renderprops";
 
 export default class Inbox extends Component {
   render() {
     return (
       <div className="inbox">
-        <p>Inbox</p>
+        <p id="inbox">Inbox</p>
         <div className="linkReceived">
           {this.props.linkReceived ? (
             <a href={this.props.linkReceived} target="_blank">
               {this.props.linkReceived}{" "}
             </a>
           ) : (
-            "No link"
+            "No Link"
           )}
         </div>
         {this.props.gotFile ? (

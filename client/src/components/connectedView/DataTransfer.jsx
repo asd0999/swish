@@ -3,71 +3,40 @@ import SendLink from "./SendLink";
 import SendFile from "./SendFile";
 import { Redirect } from "react-router-dom";
 import Inbox from "./Inbox";
+import { Spring } from "react-spring/renderprops";
 
 export default class DataTransfer extends Component {
-  // constructor(props) {
-  //   super(props);
-  // this.state = {
-  //   showFileInput: false,
-  //   showLinkInput: false,
-  // };
-  // this.showLinkInput = this.showLinkInput.bind(this);
-  // this.showFileInput = this.showFileInput.bind(this);
-  // }
-
-  // showFileInput() {
-  //   console.log("showFileInput");
-  //   if (this.state.showFileInput === false) {
-  //     this.setState({
-  //       showFileInput: true,
-  //       showLinkInput: false,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       showFileInput: false,
-  //       showLinkInput: true,
-  //     });
-  //   }
-  // }
-
-  // showLinkInput() {
-  //   console.log("showLinkInput");
-  //   if (this.state.showLinkInput === false) {
-  //     this.setState({
-  //       showFileInput: false,
-  //       showLinkInput: true,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       showFileInput: true,
-  //       showLinkInput: false,
-  //     });
-  //   }
-  // }
-
   render() {
     return (
       <>
         {this.props.peerConnection ? (
           <>
-            <div className="fileShare">
-              {/* <p onClick={this.showFileInput}>Share file</p> */}
-              <SendFile
-                // showFileInput={this.showFileInput}
-                selectFile={this.props.selectFile}
-                sendFile={this.props.sendFile}
-                resetFile={this.props.resetFile}
-                file={this.props.file}
-                fileTransferComplete={this.props.fileTransferComplete}
-                peerConnection={this.props.peerConnection}
-              />
+            <div className="connection-animation">
+              <div className="peer1"></div>
+              <div className="peer2"></div>
             </div>
+
+            <Spring
+              from={{ opacity: 0, marginTop: -200 }}
+              to={{ opacity: 1, marginTop: -4 }}
+              config={{ delay: 200, duration: 400 }}
+            >
+              {(props) => (
+                <div className="fileShare" style={props}>
+                  <SendFile
+                    selectFile={this.props.selectFile}
+                    sendFile={this.props.sendFile}
+                    resetFile={this.props.resetFile}
+                    file={this.props.file}
+                    fileTransferComplete={this.props.fileTransferComplete}
+                    peerConnection={this.props.peerConnection}
+                  />
+                </div>
+              )}
+            </Spring>
+
             <div className="linkShare">
-              {/* <p onClick={this.showFileInput}>Share URL</p> */}
-              <SendLink
-                sendLink={this.props.sendLink}
-                // showLinkInput={this.showLinkInput}
-              />
+              <SendLink sendLink={this.props.sendLink} />
             </div>
             <div className="itemsReceived">
               <Inbox
@@ -76,12 +45,6 @@ export default class DataTransfer extends Component {
                 linkReceived={this.props.linkReceived}
               />
             </div>
-            {/* {this.props.gotFile ? (
-              <div className="downloadFile">
-                <p>You have received a file</p>
-                <button onClick={this.props.download}>Download</button>
-              </div>
-            ) : null} */}
           </>
         ) : (
           <Redirect to="/" />
