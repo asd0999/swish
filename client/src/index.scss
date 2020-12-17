@@ -91,6 +91,7 @@ body {
 
 .by-line {
     margin-bottom: 60px;
+    margin-top: 50px;
 }
 
 .instruction {
@@ -112,16 +113,16 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 50px;
 }
 
 .refresh-otp {
     width: 140px;
     height: 40px;
     border-radius: 4px;
-    // margin-bottom: 40px;
     border: none;
-    // border-bottom: 1px solid grey;
-    /* box-shadow: 0px 2px 4px grey; */
+    position: relative;
+    top: 20px;
 }
 
 input[type="text"] {
@@ -140,8 +141,8 @@ input[type="text"] {
 #otp {
     text-align: center;
     color: var(--text2);
-    position: absolute;
-    top: 232px;
+    position: relative;
+    top: 32px;
 }
 
 #otp:focus {
@@ -154,8 +155,8 @@ input[type="text"] {
 }
 
 .otp {
-    position: absolute;
-    top: 232px;
+    position: relative;
+    top: 32px;
     margin: 0 0 0 10px;
     color: var(--text2);
 }
@@ -234,19 +235,14 @@ input[type="file"] {
 }
 
 #pairBtn {
-    position: absolute;
-    top: 280px;
+    position: relative;
+    top: 34px;
 }
 
 .choiceBtns {
     // position: absolute;
     // top: 260px;
     margin-top: 100px;
-}
-
-.refresh-otp {
-    position: absolute;
-    top: 258px;
 }
 
 .extra-div {
@@ -426,7 +422,7 @@ a:active {
 .aboutInfo {
     padding: 40px;
     color: var(--background);
-    margin-top: 80px;
+    margin-top: 59px;
     text-align: justify;
 }
 
@@ -436,6 +432,18 @@ a:active {
 #startby,
 #more-info {
     margin-bottom: 30px;
+}
+
+#title {
+    position: relative;
+    top: -12px;
+}
+
+hr {
+    width: 600px;
+    border: 2px solid var(--background);
+    position: relative;
+    bottom: 36px;
 }
 
 #el-pitch {

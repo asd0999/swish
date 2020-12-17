@@ -5,6 +5,7 @@ export default class AboutInfo extends Component {
     return (
       <div className="aboutInfo">
         <h1 id="title">SWISH</h1>
+        <hr />
         <h2>
           <div id="el-pitch">
             Swish is a peer-to-peer application that can be used to transfer
