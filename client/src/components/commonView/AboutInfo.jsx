@@ -7,23 +7,24 @@ export default class AboutInfo extends Component {
         <h1 id="title">SWISH</h1>
         <h2>
           <div id="el-pitch">
-            Swish is a peer-to-peer application <br />
-            that can be used to transfer files and URLs <br />
-            between devices and/or peers
+            Swish is a peer-to-peer application that can be used to transfer
+            files and URLs between devices and/or peers
           </div>
           <div id="list">
             <p>Features:</p>
             <ul>
               <li>No password / login</li>
               <li>Secure OTP based pairing</li>
-              <li>Encrypted transfer of data</li>
-              <li>Data not saved anywhere</li>
+              <li>Encrypted data transfer</li>
+              <li>Data not saved on server</li>
             </ul>
           </div>
           <div id="startby">
-            Start by pairing your devices. Generate an OTP on one device and
-            enter it on the other. After transfer, click "disconnect" or simply
-            refresh page to end connection.
+            <h3>Start by pairing your devices</h3>
+            <ol>
+              <li>Generate an OTP on one device and enter it on the other </li>
+              <li>After transfer, click "disconnect" or simply refresh page</li>
+            </ol>
           </div>
           <div id="more-info">
             <div id="icons"></div>
