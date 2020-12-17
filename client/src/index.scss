@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
-@import url("https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Satisfy&display=swap");
 :root {
     // --background: #fcdf12;
     --background: #fadb14;
@@ -34,6 +34,21 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: var(--background);
+}
+
+#logo-small {
+    width: 100px;
+    transform: rotate(15deg);
+    margin-left: -30px;
+}
+
+#logo-wish {
+    // font-family: "Pacifico", cursive;
+    font-family: "Satisfy", cursive;
+    font-size: 48px;
+    position: relative;
+    left: -39px;
+    top: -5px;
 }
 
 .cover-image {
@@ -422,7 +437,7 @@ a:active {
 .aboutInfo {
     padding: 40px;
     color: var(--background);
-    margin-top: 59px;
+    margin-top: 56px;
     text-align: justify;
 }
 
