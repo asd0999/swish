@@ -106,7 +106,6 @@ export default class App extends Component {
         // console.log(string);
 
         // file part
-        // console.log(data);
         this.handleReceivingData(data);
       });
 
@@ -162,7 +161,6 @@ export default class App extends Component {
       // console.log(string);
 
       // file part
-      // console.log(typeof data, data);
       this.handleReceivingData(data);
     });
 
